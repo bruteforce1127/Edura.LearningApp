@@ -15,7 +15,16 @@ Traditional educational platforms often focus solely on either children's learni
 
 1. An engaging and gamified learning environment for children that encourages consistent participation
 2. Comprehensive analytics and support tools for parents to monitor and guide their children's educational journey
-3. Ensures kids participation and engagement with its unique tools and features 
+3. Ensures kids participation and engagement with its unique tools and features
+
+# Survey Results
+
+-> we conducted a survey using google form regarding the problems they face about their childern engagement in education
+
+![Survey Questions](./Images/GamesImage.jpg)
+![Result 1](./Images/SuperKidDetective.jpg)
+![Result 2](./Images/chartImage.jpg)
+![Result 3](./Images/chartImage.jpg)
 
 ## 🌟 Features
 

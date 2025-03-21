@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Quest Creator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
+            background-color: #f0f8ff;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23aaccff' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            
+            width: 90%;
+            max-width: 450px; 
+            margin: 20px auto; 
+            background: #fff; 
+            padding: 25px;
+            border-radius: 15px; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border: 3px solid #4b7bec;
+
+        }
+        h2 {
+            color: #4b7bec;
+            text-align: center;
+            font-size: 26px;
+            margin-top: 0;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        h3 {
+            color: #4b7bec;
+            margin-top: 20px;
+        }
+        input, select { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 8px 0; 
+            border-radius: 8px;
+            border: 2px solid #a5b1c2;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4b7bec;
+            box-shadow: 0 0 5px rgba(75, 123, 236, 0.5);
+        }
+        button {
+            width: 100%; 
+            padding: 12px; 
+            background: #4b7bec; 
+            color: #fff;
+            border: none; 
+            border-radius: 8px; 
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        button:hover { 
+            background: #3867d6; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .participant { 
+            margin-bottom: 10px; 
+            position: relative;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #2d3436;
+            margin-top: 5px;
+        }
+        #msg {
+            color: #eb4d4b;
+            font-weight: bold;
+            text-align: center;
+        }
+        .stars {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #fed330;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+                margin: 10px auto;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .stars {
+                font-size: 20px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                width: 98%;
+                padding: 12px;
+                border-width: 2px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 16px;
+            }
+            input, select {
+                padding: 8px;
+                font-size: 13px;
+            }
+            button {
+                padding: 8px;
+                font-size: 13px;
+                margin: 8px 0;
+            }
+            label {
+                font-size: 14px;
+            }
+            .stars {
+                font-size: 18px;
+                top: 12px;
+                right: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="stars">★★★</div>
+    <h2>Quest Creator</h2>
+    <form id="createContestForm">
+        <label>Quest Master (that's you!)</label>
+        <input type="text" id="creator" readonly>
+        
+        <label>Number of questions?</label>
+        <input type="number" id="noOfQuestions" required min="1" placeholder="How many questions?">
+        
+        <label>Grade Level</label>
+<select id="grade">
+  <option value="1">Grade 1</option>
+  <option value="2">Grade 2</option>
+  <option value="3">Grade 3</option>
+  <option value="4">Grade 4</option>
+  <option value="5">Grade 5</option>
+</select>
+<button type="button" id="autoSelectGradeBtn">Auto Select Grade</button>
+
+        
+        <div id="participants">
+            <h3>Adventurers</h3>
+        </div>
+        
+        <button type="button" onclick="addParticipant()">Add Adventurer</button>
+        <button type="submit">Create Quest!</button>
+    </form>
+    
+    <p id="msg"></p>
+</div>
+
+<script>
+    const apiBaseUrl = "http://iiit1127.us-east-2.elasticbeanstalk.com"; // Ensure this matches your actual API base URL
+
+// Fetch the user's grade using the provided username
+async function fetchUserGrade(username) {
+    if (!username) {
+        console.error("Username not provided for fetching grade.");
+        showFeedback("User not found. Please log in again.", "incorrect");
+        return;
+    }
+
+    try {
+        const url = `${apiBaseUrl}/child/${encodeURIComponent(username)}`;
+        console.log("Fetching grade from:", url);
+
+        const response = await fetch(url, { method: "GET", headers: { "Content-Type": "application/json" } });
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const userData = await response.json();
+        window.userGrade = userData.grade;
+        console.log("Grade loaded successfully:", window.userGrade);
+
+        // Update the grade dropdown (select element)
+        document.getElementById("grade").value = userData.grade;
+        localStorage.setItem("grade", userData.grade); // Store grade in localStorage
+
+    } catch (error) {
+        console.error("Error fetching grade:", error);
+        showFeedback("Failed to load grade. Please check your connection.", "incorrect");
+        window.userGrade = null;
+    }
+}
+
+// Initialize the user: if loginUsername is missing, fetch the first child's username and then fetch the grade
+async function initializeUser() {
+    let username = localStorage.getItem("loginUsername");
+
+    if (!username) {
+        const parentUsername = localStorage.getItem("parentUsername");
+        if (!parentUsername) {
+            console.error("Parent username not found in localStorage");
+            showFeedback("No user found. Please log in again.", "incorrect");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/getChild/${encodeURIComponent(parentUsername)}`);
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status} ${response.statusText}`);
+            }
+
+            const childList = await response.json();
+            if (childList && Array.isArray(childList) && childList.length > 0) {
+                username = childList[0]; // Use the first child's username
+                localStorage.setItem("loginUsername", username);
+                console.log("First child username set as:", username);
+            } else {
+                console.error("No children found for the parent.");
+                showFeedback("No child account found.", "incorrect");
+                return;
+            }
+        } catch (error) {
+            console.error("Error fetching child username:", error);
+            showFeedback("Error fetching child data. Check connection.", "incorrect");
+            return;
+        }
+    }
+
+    // Fetch the grade using the determined username
+    fetchUserGrade(username);
+}
+
+// Run initialization on page load
+document.addEventListener("DOMContentLoaded", initializeUser);
+
+// ==================== UI HANDLERS ====================
+
+// Auto-fill the creator field and update grade dropdown from localStorage if available
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("creator").value = localStorage.getItem("parentUsername") || "";
+    const storedGrade = localStorage.getItem("grade");
+    if (storedGrade !== null) {
+        document.getElementById("grade").value = storedGrade;
+    }
+});
+
+// Handler for adding new adventurer (participant) input fields with a delete button
+function addParticipant() {
+    const div = document.createElement("div");
+    div.className = "participant";
+    div.style.position = "relative"; // To allow positioning the delete button
+    div.style.marginBottom = "10px";
+    div.innerHTML = `
+        <input type="text" class="participantName" placeholder="Adventurer Username" required style="width: calc(100% - 40px); padding-right: 30px;">
+        <button type="button" class="deleteParticipantBtn" onclick="deleteParticipant(this)" style="
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #eb4d4b;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 20px;
+            padding: 0;
+        ">&times;</button>
+    `;
+    document.getElementById("participants").appendChild(div);
+}
+
+// Function to delete a participant entry
+function deleteParticipant(button) {
+    button.parentElement.remove();
+}
+
+// Handle form submission for creating the contest
+document.getElementById("createContestForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const creator = document.getElementById("creator").value.trim();
+    const noOfQuestions = parseInt(document.getElementById("noOfQuestions").value, 10) || 0;
+    const grade = parseInt(document.getElementById("grade").value, 10) || 0;
+
+    if (!creator) {
+        showFeedback("Quest Master name is required.", "incorrect");
+        return;
+    }
+    if (noOfQuestions <= 0) {
+        showFeedback("Please enter a valid number of challenges.", "incorrect");
+        return;
+    }
+
+    let participants = [];
+    document.querySelectorAll(".participantName").forEach(input => {
+        const username = input.value.trim();
+        if (username) {
+            participants.push(username);
+        }
+    });
+
+    const requestBody = { creator, grade, noOfQuestions, participants };
+
+    try {
+        const response = await fetch(apiBaseUrl + "/api/contest/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (response.ok) {
+            const room = await response.json();
+            alert("Math Quest created! Your Secret Code: " + room.roomCode);
+            document.getElementById("createContestForm").reset();
+            // Restore the auto-fill values after form reset
+            document.getElementById("creator").value = localStorage.getItem("parentUsername") || "";
+            document.getElementById("grade").value = localStorage.getItem("grade") || "";
+        } else {
+            const err = await response.text();
+            showFeedback("Error: " + err, "incorrect");
+        }
+    } catch (error) {
+        showFeedback("Error creating your Math Quest.", "incorrect");
+        console.error(error);
+    }
+});
+
+// Handler for the Auto Select Grade button
+document.getElementById("autoSelectGradeBtn").addEventListener("click", function() {
+    if (window.userGrade !== undefined && window.userGrade !== null) {
+        document.getElementById("grade").value = window.userGrade;
+        let gradeText = window.userGrade == 0 ? "Kindergarten" : "Grade " + window.userGrade;
+        showFeedback("Auto-selected grade: " + gradeText, "correct");
+    } else {
+        showFeedback("Grade is not available yet, please wait.", "incorrect");
+    }
+});
+
+// ------------------- TOAST NOTIFICATION FUNCTION -------------------
+// This function creates a toast notification in place of inline error messages,
+// using a design consistent with your theme.
+function showFeedback(message, type) {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.getElementById("toastContainer");
+    if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "toastContainer";
+        toastContainer.style.position = "fixed";
+        toastContainer.style.top = "20px";
+        toastContainer.style.right = "20px";
+        toastContainer.style.zIndex = "9999";
+        document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast " + (type === "incorrect" ? "toast-error" : "toast-success");
+    toast.textContent = message;
+
+    // Basic styling for the toast
+    toast.style.minWidth = "200px";
+    toast.style.marginBottom = "10px";
+    toast.style.padding = "10px 20px";
+    toast.style.borderRadius = "8px";
+    toast.style.color = "#fff";
+    toast.style.fontWeight = "bold";
+    toast.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.3s ease-in-out";
+    if (type === "incorrect") {
+        toast.style.backgroundColor = "#eb4d4b"; // error red
+    } else {
+        toast.style.backgroundColor = "#27ae60"; // success green
+    }
+
+    toastContainer.appendChild(toast);
+
+    // Fade in
+    setTimeout(() => {
+       toast.style.opacity = "1";
+    }, 100);
+
+    // Fade out and remove after 3 seconds
+    setTimeout(() => {
+       toast.style.opacity = "0";
+       setTimeout(() => {
+           toast.remove();
+       }, 300);
+    }, 3000);
+}
+
+</script>
+
+</body>
+</html>

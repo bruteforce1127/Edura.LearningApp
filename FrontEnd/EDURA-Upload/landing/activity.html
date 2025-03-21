@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Explore the Sky</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #020214, #0a0a2a, #1a1a4a);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main content */
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(100, 150, 255, 0.8);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: #adf;
+            margin-bottom: 2rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #ddf;
+        }
+
+        /* Launch button */
+        .launch-button {
+            background: linear-gradient(45deg, #3030b0, #5050f0);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(80, 120, 255, 0.7);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(100, 150, 255, 0.9);
+        }
+
+        /* Back button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(50, 50, 120, 0.7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(70, 70, 150, 0.9);
+        }
+
+        /* Planets */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        #planet1 {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #fa5, #a42);
+            bottom: -50px;
+            left: -50px;
+            box-shadow: 0 0 30px rgba(255, 160, 80, 0.5);
+        }
+
+        #planet2 {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 70% 70%, #5af, #24a);
+            top: 50px;
+            right: -40px;
+            box-shadow: 0 0 30px rgba(80, 180, 255, 0.5);
+        }
+
+        /* Rocket animation */
+        .rocket {
+            position: absolute;
+            width: 60px;
+            height: 120px;
+            bottom: 50px;
+            right: 100px;
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(5deg); }
+            50% { transform: translateY(-20px) rotate(-2deg); }
+        }
+
+        /* Shooting stars */
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(1px);
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .rocket {
+                width: 40px;
+                height: 80px;
+                right: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <button class="back-button" onclick="window.history.back()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 6H1M1 6L6 1M1 6L6 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back
+    </button>
+    
+    <div class="container">
+        <h1>Let's Explore the Sky</h1>
+        <p class="subtitle">An interactive journey through space</p>
+        
+        <p>Ready to blast off into an exciting adventure through our solar system? Learn about planets, stars, and the wonders of space with fun interactive activities!</p>
+        
+        <button class="launch-button" onclick="window.open('https://springroll-tc.pbskids.org/96bc02c5-7ccc-4f42-9e1a-ec159ffdfd28/b2524e4c807af2b45d09fbed67a8f3565426d484/release/index.html?playOptions=%7B%22game_guid%22:%2296bc02c5-7ccc-4f42-9e1a-ec159ffdfd28%22,%22language%22:%22en%22%7D', '_blank')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 1L13 5H7L10 1Z" fill="white"/>
+                <path d="M10 19V5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M3 9L10 15L17 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Launch Space Explorer
+        </button>
+    </div>
+    
+    <div class="planet" id="planet1"></div>
+    <div class="planet" id="planet2"></div>
+    
+    <svg class="rocket" viewBox="0 0 60 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 0C30 0 10 30 10 70C10 90 20 100 30 100C40 100 50 90 50 70C50 30 30 0 30 0Z" fill="#f5f5f5"/>
+        <path d="M30 0C30 0 20 30 20 70C20 80 25 90 30 90C35 90 40 80 40 70C40 30 30 0 30 0Z" fill="#e0e0e0"/>
+        <path d="M20 80H40L30 100L20 80Z" fill="#f44336"/>
+        <path d="M20 85H40L30 105L20 85Z" fill="#ff9800"/>
+        <path d="M25 110H35L30 120L25 110Z" fill="#ff9800"/>
+        <circle cx="30" cy="50" r="10" fill="#2196f3"/>
+        <circle cx="30" cy="50" r="5" fill="#1976d2"/>
+    </svg>
+
+    <script>
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = window.innerWidth < 768 ? 100 : 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.floor(Math.random() * window.innerWidth);
+                const posY = Math.floor(Math.random() * window.innerHeight);
+                star.style.left = `${posX}px`;
+                star.style.top = `${posY}px`;
+                
+                // Random opacity for twinkling effect
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Create shooting stars
+        function createShootingStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            function createShootingStar() {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                
+                // Random position
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * (window.innerHeight / 2);
+                shootingStar.style.left = `${startX}px`;
+                shootingStar.style.top = `${startY}px`;
+                
+                starsContainer.appendChild(shootingStar);
+                
+                // Animate
+                setTimeout(() => {
+                    shootingStar.style.opacity = '1';
+                    shootingStar.style.transform = `translateX(${Math.random() * 200 + 100}px) translateY(${Math.random() * 200 + 100}px)`;
+                    shootingStar.style.transition = `transform ${Math.random() * 2 + 1}s linear, opacity 0.1s ease-in`;
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        shootingStar.style.opacity = '0';
+                        setTimeout(() => {
+                            shootingStar.remove();
+                        }, 1000);
+                    }, Math.random() * 1000 + 500);
+                }, 10);
+            }
+            
+            // Create shooting stars at random intervals
+            setInterval(createShootingStar, Math.random() * 3000 + 2000);
+            
+            // Create a few initial shooting stars
+            for (let i = 0; i < 3; i++) {
+                setTimeout(createShootingStar, Math.random() * 2000);
+            }
+        }
+        
+        // Twinkle stars effect
+        function twinkleStars() {
+            const stars = document.querySelectorAll('.star');
+            
+            stars.forEach(star => {
+                setInterval(() => {
+                    const newOpacity = Math.random() * 0.5 + 0.3;
+                    star.style.opacity = newOpacity;
+                    star.style.transition = 'opacity 3s ease';
+                }, Math.random() * 5000 + 3000);
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createShootingStars();
+            twinkleStars();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edura Learning - Kids Video Player</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #f9f3ff;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: #ff6b98;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .video-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .main-player {
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .main-player:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 15px;
+      background: linear-gradient(90deg, #ff6b98, #ffb347, #90ee90, #87cefa);
+      border-radius: 30px 30px 0 0;
+    }
+    
+    .player-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 8px solid #ffd1dc;
+    }
+    
+    /* Initially hide all iframes */
+    .player-frame iframe {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+    }
+    
+    .video-title {
+      font-size: 1.8rem;
+      color: #8657b5;
+      margin: 20px 0 10px;
+      text-align: center;
+    }
+    
+    .video-description {
+      color: #666;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .video-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .video-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+      border: 5px solid #e2f0ff;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      border-color: #ffd1dc;
+    }
+    
+    .video-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    
+    .video-card-info {
+      padding: 15px;
+    }
+    
+    .video-card-title {
+      font-size: 1.2rem;
+      color: #5f4b8b;
+      margin: 0 0 10px;
+    }
+    
+    .video-card-duration {
+      color: #ff6b98;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    
+    .video-card-duration::before {
+      content: "▶";
+      margin-right: 5px;
+    }
+    
+    /* Cute decorative elements */
+    .decoration {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+    }
+    
+    .star {
+      top: 20px;
+      right: 20px;
+      color: #ffce00;
+      font-size: 2rem;
+    }
+    
+    .cloud {
+      bottom: -15px;
+      left: 30px;
+      background: white;
+      border-radius: 50px;
+      width: 100px;
+      height: 40px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    
+    .cloud:before {
+      content: "";
+      position: absolute;
+      background: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      top: -25px;
+      left: 15px;
+    }
+    
+    .cloud:after {
+      content: "";
+      position: absolute;
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      top: -20px;
+      left: 50px;
+    }
+    
+    /* Loading animation */
+    .loading {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+    
+    .loading div {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ff6b98;
+      margin: 0 5px;
+      animation: bounce 0.6s infinite alternate;
+    }
+    
+    .loading div:nth-child(2) {
+      animation-delay: 0.2s;
+      background: #ffb347;
+    }
+    
+    .loading div:nth-child(3) {
+      animation-delay: 0.4s;
+      background: #90ee90;
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+    
+    /* No video message */
+    .no-video {
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #8657b5;
+      font-size: 1.5rem;
+    }
+    
+    .no-video img {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    
+    /* Active video card styling */
+    .video-card.active {
+      border-color: #ff6b98;
+      transform: scale(1.05);
+    }
+    
+    .story-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+    
+    .story-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      border: 5px solid #e2f0ff;
+    }
+    
+    .story-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      border-color: #ffd1dc;
+    }
+    
+    .story-thumbnail {
+      position: relative;
+      text-align: center;
+      padding: 20px 20px 0;
+      background: #f5f8ff;
+    }
+    
+    .story-thumbnail img {
+      width: 200px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      border: 3px solid white;
+    }
+    
+    .story-age {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: #ff6b98;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .story-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    
+    .story-title {
+      font-size: 1.3rem;
+      color: #5f4b8b;
+      margin: 0 0 10px;
+    }
+    
+    .story-description {
+      color: #666;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    
+    .download-btn {
+      background: #8657b5;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    
+    .download-btn:hover {
+      background: #ff6b98;
+      transform: scale(1.05);
+    }
+    
+    .download-icon {
+      margin-right: 8px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Edura Learning Videos</h1>
+      <p>Click on any video card below to start learning!</p>
+    </div>
+    
+    <div class="video-container">
+      <div class="main-player">
+        <div class="star decoration">★</div>
+        <div class="cloud decoration"></div>
+        
+        <div class="player-frame">
+          <div class="no-video">
+            <img src="https://i.ytimg.com/vi_webp/VCWSI84aGbg/maxresdefault.webp" alt="Cute character" />
+            <p>Select a video to start learning!</p>
+          </div>
+          <div class="loading">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          
+          <!-- Iframes with data-src attributes for original URLs -->
+          <iframe id="video-aqz-KE-bpKQ" data-src="https://www.youtube.com/embed/w_ysxZqQoXg?si=Dda1vgNH7Xgmk8ZP" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="video-xUUq0HuSLS0" data-src="https://www.youtube.com/embed/BVT5zZvSRks?si=LQP56dSkthmd-I7E" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="video-_mVLuF-CQ8A" data-src="https://www.youtube.com/embed/jp6IENCaHGw?si=qU8Hb1PmuBTBMpiC" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="video-Rmx1Cu5X00s" data-src="https://www.youtube.com/embed/2muobEZUalE?si=VJ7U5ztwSdghnl7y" title="YouTube video player" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="video-6RfMEfWJlrk" data-src="https://www.youtube.com/embed/2MrBeudavKc?si=8ma0fxWTfzm2MtYK" title="YouTube video player" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="video-Dr8yeuvPAyw" data-src="https://www.youtube.com/embed/Oxw6FoUNeT4?si=ZK7hEJNwPs83G3Z1" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <h2 class="video-title">Welcome to Edura Learning</h2>
+        <p class="video-description">Choose a fun educational video from below!</p>
+      </div>
+      
+      <div class="video-cards">
+        <!-- Video Card 1 -->
+        <div class="video-card" data-video-id="aqz-KE-bpKQ" data-title="Learn English" data-description="Learning Basics of English">
+          <img src="https://i.ytimg.com/vi/by1QAoRcc-U/hq720.jpg?sqp=-…AFwAcABBg==&rs=AOn4CLCQSiA1m92qEXZt4vzots4Iu5EyQw" alt="Learn English" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Basics of English</h3>
+            <div class="video-card-duration">8:43</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 2 -->
+        <div class="video-card" data-video-id="xUUq0HuSLS0" data-title="Good Manners" data-description="Learning Good Manners">
+          <img src="https://i.ytimg.com/vi/BVT5zZvSRks/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLBPDgmVpY5KjKw5MUDjTQxLaf3zgg" alt="Good Manners" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Learning Good Manners</h3>
+            <div class="video-card-duration">7:10</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 3 -->
+        <div class="video-card" data-video-id="_mVLuF-CQ8A" data-title="Good and Bad Habits" data-description="Learn the good and bad habits">
+          <img src="https://i.ytimg.com/vi/jp6IENCaHGw/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLCO7fH14ZKJrDsgd1kS3KTKXBLjcA" alt="Good and Bad Habits" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Good and Bad Habits</h3>
+            <div class="video-card-duration">15:56</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 4 -->
+        <div class="video-card" data-video-id="Rmx1Cu5X00s" data-title="Division Concept" data-description="Learning About Division Concept!">
+          <img src="https://i.ytimg.com/vi/2muobEZUalE/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLBmkwX1fbt7y5cpCZxZv93LRRIlQQ" alt="Learn To Talk" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Division Concept</h3>
+            <div class="video-card-duration">8:25</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 5 -->
+        <div class="video-card" data-video-id="6RfMEfWJlrk" data-title="Time" data-description="Learning about calculating time">
+          <img src="https://i.ytimg.com/vi/r2K1Py9U87I/hq720.jpg?sqp=-…AFwAcABBg==&rs=AOn4CLCN9G3E2rmtlSAMSjsiO8Ad83_2Hg" alt="Learn Colors and Learn Numbers" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Time</h3>
+            <div class="video-card-duration">4:54</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 6 -->
+        <div class="video-card" data-video-id="Dr8yeuvPAyw" data-title="Sea Animals" data-description="Learning About Sea Animals">
+          <img src="https://i.ytimg.com/vi/Oxw6FoUNeT4/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLDe_uQ7kHdSvoMFZLgxceLn4P1fqA" alt="Learn Objects" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Sea Animals</h3>
+            <div class="video-card-duration">4:08</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="header">
+      <h1>Story Exercises</h1>
+      <p>Download fun stories and complete the exercises!</p>
+    </div>
+    
+    <div class="story-cards">
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="/img/Seuss.png" />
+          <div class="story-age">Ages 5-8</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">Seuss Activity</h3>
+          <button class="download-btn" onclick="downloadStory('seuss-activity-book.pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+      
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="https://imgs.search.brave.com/STERZU7Rb0rJmLDuuA0knqA_c5nwfIyUl68iz-9GtfM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZWRoZWxwZXIuY29t/L2ZpcnN0LWdyYWRl/LXdvcmtzaGVldHMu/cG5n" alt="Space Adventure Story" />
+          <div class="story-age">Ages 5-8</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">WorkSheet Bundle</h3>
+          <button class="download-btn" onclick="downloadStory('WorkSheet.pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+      
+
+      
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="https://media-hosting.imagekit.io//4985c74293284647/children-holding-their-food-park-scene_1308-51942.avif?Expires=1837097446&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=mdM1YGH5Rs6wZ3mYSUtSm2lh3zVgazxCtGFWX21pt6GzoNxCVbLR8K8EIQVwlq3Er2~8MPfS94nlhY1hrQHZdN6TNUNnjwF5K7Cmi-9-wyww~en03yzM87GkwZwS3iF-gfaQcfRgc08RBTsh0T-xKBMFQkbEb9ukxJBklgqi3~9uy-QDrvw0szOt9Q82WuSczyk~7ZUnl3cDn49GT6qNyq74M0kLWsFhlOSY6ppm9RBubAOY~1-UVrX8-UXc1l0OMbKPECk-9VxGwfhLL2R7dbf--lSrZEvTgtxNUo1w0kVjfx-PHWGIsIJWfAHWGdpVn26AZEaNsHN7zTqO9FfFfA__" alt="KinderGarten Vocabulary" />
+          <div class="story-age">Ages 5-8</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">Word Search Puzzle</h3>
+          <button class="download-btn" onclick="downloadStory('WordSearch.pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables
+    var noVideoMessage = document.querySelector('.no-video');
+    var loadingAnimation = document.querySelector('.loading');
+    var allIframes = document.querySelectorAll('.player-frame iframe');
+    
+    // Function to play a video
+    function playVideo(videoId, title, description) {
+      // Show loading animation and hide the no-video message
+      loadingAnimation.style.display = 'block';
+      noVideoMessage.style.display = 'none';
+      
+      // Update video title and description
+      document.querySelector('.video-title').textContent = title;
+      document.querySelector('.video-description').textContent = description;
+      
+      // Stop all videos by clearing their src and hiding them
+      allIframes.forEach(iframe => {
+        if (iframe.id !== 'video-' + videoId) {
+          iframe.src = ""; // Stops playback
+          iframe.style.display = 'none';
+        }
+      });
+      
+      // Show and play the selected video
+      var selectedIframe = document.getElementById('video-' + videoId);
+      if (selectedIframe) {
+        // Restore the original src from data-src and add autoplay parameters
+        var originalSrc = selectedIframe.getAttribute('data-src');
+        selectedIframe.src = originalSrc.includes('?') ? 
+                             originalSrc.split('?')[0] + '?rel=0&autoplay=1' : 
+                             originalSrc + '?rel=0&autoplay=1';
+        selectedIframe.style.display = 'block';
+      }
+      
+      // Hide loading animation after a short delay
+      setTimeout(function() {
+        loadingAnimation.style.display = 'none';
+      }, 1000);
+      
+      // Update active video card styling
+      document.querySelectorAll('.video-card').forEach(card => {
+        if (card.dataset.videoId === videoId) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+    
+    // Add click event listeners to video cards
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const videoId = this.dataset.videoId;
+        const title = this.dataset.title;
+        const description = this.dataset.description;
+        playVideo(videoId, title, description);
+      });
+    });
+    
+    // Add some cute animations (bubbles)
+    function addBubbles() {
+      const bubble = document.createElement('div');
+      bubble.style.position = 'fixed';
+      bubble.style.width = Math.random() * 30 + 20 + 'px';
+      bubble.style.height = bubble.style.width;
+      bubble.style.borderRadius = '50%';
+      bubble.style.background = 'rgba(255, 255, 255, 0.4)';
+      bubble.style.border = '2px solid rgba(255, 255, 255, 0.8)';
+      bubble.style.bottom = '-100px';
+      bubble.style.left = Math.random() * window.innerWidth + 'px';
+      bubble.style.zIndex = '-1';
+      bubble.style.animationDuration = Math.random() * 5 + 5 + 's';
+      bubble.style.animationName = 'float';
+      bubble.style.animationTimingFunction = 'linear';
+      bubble.style.animationIterationCount = '1';
+      document.body.appendChild(bubble);
+      
+      setTimeout(() => {
+        document.body.removeChild(bubble);
+      }, 10000);
+    }
+    
+    // Create bubble animation
+    const bubbleStyle = document.createElement('style');
+    bubbleStyle.innerHTML = `
+      @keyframes float {
+        0% { transform: translateY(0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 0.8; }
+        100% { transform: translateY(-100vh); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(bubbleStyle);
+    
+    // Add bubbles periodically
+    setInterval(addBubbles, 3000);
+    
+    // Function to download a story PDF
+    function downloadStory(filename) {
+      window.location.href = 'pdf/' + filename;
+    }
+  </script>
+</body>
+</html>

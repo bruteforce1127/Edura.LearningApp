@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Race Math Adventure</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+    ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    }
+  
+  /* Track - the area behind the thumb */
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 10, 30, 0.8);
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 50, 150, 0.2);
+  }
+  
+  /* Thumb - the draggable part */
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #4d6bff, #00ddff);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 10, 30, 0.8);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.5);
+  }
+  
+  /* Thumb on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #69f, #0df);
+    box-shadow: 0 0 12px rgba(0, 220, 255, 0.8);
+  }
+  
+  /* Thumb when active/clicking */
+  ::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(to bottom, #7af, #0ff);
+  }
+  
+  /* Up and down buttons */
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+  
+  /* Corner where vertical and horizontal scrollbars meet */
+  ::-webkit-scrollbar-corner {
+    background: rgba(0, 10, 30, 0.8);
+  }
+  
+  /* Firefox support */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #00ddff rgba(0, 10, 30, 0.8);
+  }
+  
+  /* Adding a subtle star effect to the scrollbar track */
+  ::-webkit-scrollbar-track:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 8px 8px;
+    pointer-events: none;
+  }
+  
+  /* Add to your existing CSS or create a new <style> tag */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            font-family: 'Nunito', sans-serif;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            border-radius: 50%;
+            animation: shoot 3s linear forwards;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw)) translateY(calc(100vh)) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .game-wrapper {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.5);
+            overflow: hidden;
+            padding: 5px;
+            border: 2px solid rgba(100, 200, 255, 0.3);
+            position: relative;
+            display: none; /* Initially hidden */
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .intro-screen {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.5);
+            padding: 10px;
+            border: 2px solid rgba(100, 200, 255, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.8s ease forwards;
+            overflow-y: auto;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(1.05); }
+        }
+        
+        .intro-title {
+            font-family: 'Baloo 2', cursive;
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #00aaff;
+            animation: pulse 3s infinite;
+            padding: 0 10px;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 15px #00aaff; }
+            50% { text-shadow: 0 0 25px #00ddff; }
+            100% { text-shadow: 0 0 15px #00aaff; }
+        }
+        
+        .intro-content {
+            background: rgba(0, 40, 100, 0.3);
+            border-radius: 15px;
+            padding: 20px 15px;
+            margin: 15px 0;
+            width: 90%;
+            max-width: 1000px;
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 70%;
+        }
+        
+        .intro-text {
+            font-family: 'Baloo 2', cursive;
+            color: white;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            padding: 0 5px;
+        }
+        
+        .math-example {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .rocket-example {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 100, 200, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px;
+            min-width: 100px;
+            flex: 1 1 120px;
+            max-width: 150px;
+        }
+        
+        .rocket-icon {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #ff9500;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .equation {
+            font-family: 'Baloo 2', cursive;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        
+        .equals {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #00ddff;
+            margin: 0 15px;
+        }
+        
+        .start-button {
+            background: linear-gradient(45deg, #ff5e00, #ff9500);
+            color: white;
+            font-family: 'Baloo 2', cursive;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            padding: clamp(10px, 3vw, 15px) clamp(25px, 5vw, 40px);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 149, 0, 0.7);
+        }
+        
+        .start-button:active {
+            transform: scale(0.98);
+        }
+        
+        .start-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            animation: shineEffect 3s infinite;
+        }
+        
+        @keyframes shineEffect {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            20%, 100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00aaff;
+            z-index: 3;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 100, 255, 0.2);
+            border: 2px solid rgba(100, 200, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.5);
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(0, 150, 255, 0.4);
+            transform: scale(1.1);
+        }
+        
+        .fullscreen-icon i {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* Enhanced Responsive Styles */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+                height: 90vh;
+            }
+            
+            .intro-content {
+                padding: 15px;
+                max-height: 65%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                height: 85vh;
+            }
+            
+            .intro-content {
+                width: 95%;
+                padding: 15px 10px;
+                max-height: 60%;
+            }
+            
+            .fullscreen-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .fullscreen-icon i {
+                font-size: 1.2rem;
+            }
+            
+            .rocket-example {
+                padding: 10px;
+                margin: 5px;
+                min-width: 80px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                width: 98%;
+                height: 80vh;
+            }
+            
+            .intro-content {
+                width: 98%;
+                padding: 10px 5px;
+                max-height: 55%;
+            }
+            
+            .math-example {
+                gap: 5px;
+                margin: 10px 0;
+            }
+            
+            .rocket-example {
+                padding: 8px;
+                margin: 3px;
+                flex: 1 1 80px;
+                max-width: 100px;
+            }
+            
+            .fullscreen-btn {
+                width: 40px;
+                height: 40px;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .fullscreen-icon i {
+                font-size: 1rem;
+            }
+        }
+
+        /* Added for portrait phones */
+        @media (max-height: 700px) {
+            .intro-content {
+                max-height: 50%;
+                padding: 10px;
+            }
+            
+            .intro-text {
+                margin-bottom: 10px;
+            }
+            
+            .math-example {
+                margin: 10px 0;
+            }
+        }
+        
+        /* Handle small screens in landscape mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                height: 95vh;
+            }
+            
+            .intro-content {
+                max-height: 40vh;
+                padding: 10px;
+            }
+            
+            .intro-title {
+                margin-bottom: 10px;
+            }
+            
+            .intro-text {
+                margin-bottom: 5px;
+            }
+            
+            .math-example {
+                margin: 5px 0;
+                flex-wrap: nowrap;
+            }
+            
+            .rocket-example {
+                padding: 5px;
+                margin: 3px;
+            }
+            
+            .start-button {
+                margin: 10px 0;
+            }
+        }
+    </style>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <!-- Intro Screen -->
+        <div class="intro-screen" id="introScreen">
+            <h1 class="intro-title">Number Compare Challenge!</h1>
+            
+            <div class="intro-content">
+                <p class="intro-text">Welcome, little math explorer! Today, we’re going to play a fun game of comparing numbers.</p>
+                <!-- <p class="intro-text">When we divide any number by 1, the number stays the same!</p> -->
+                
+                <div class="math-example">
+                    <div class="rocket-example">
+                        <i class="fas fa-rocket rocket-icon"></i>
+                        <div class="equation">Find the biggest ! </div>
+                    </div>
+                    
+                    <div class="rocket-example">
+                        <i class="fas fa-rocket rocket-icon"></i>
+                        <div class="equation">Spot the smallest ! </div>
+                    </div>
+                    
+                    <div class="rocket-example">
+                        <i class="fas fa-rocket rocket-icon"></i>
+                        <div class="equation">Compare and choose ! </div>
+                    </div>
+                </div>
+                
+                <p class="intro-text">Sharpen your math skills, become a number detective, and master the world of numbers! </p>
+            </div>
+            
+            <button class="start-button" id="startButton" >
+                START COMPARING!
+            </button>
+        </div>
+        
+        <!-- Game Screen -->
+        <div class="game-wrapper" id="gameWrapper">
+            <iframe src="https://www.mindlygames.com/games/space-race/index.html?questionnaireKey=-NYrGHWjn4wTbKp8vQK2"
+                    title="Comparing Numbers Game"
+                    allowfullscreen
+                    id="gameFrame">
+            </iframe>
+            <div class="fullscreen-btn" id="fullscreenBtn">
+                <div class="fullscreen-icon">
+                    <i class="fas fa-expand"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  <script src="spacetheme.js">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if there's pending game data to send
+        const pendingGameData = localStorage.getItem('pendingGameData');
+        const gameSendTime = localStorage.getItem('gameSendTime');
+        
+        if (pendingGameData && gameSendTime) {
+            const gameData = JSON.parse(pendingGameData);
+            const sendTime = new Date(gameSendTime);
+            const now = new Date();
+            
+            // Calculate time remaining until we should send data
+            const timeRemaining = Math.max(0, sendTime.getTime() - now.getTime());
+            
+            console.log(`Game data will be sent in ${timeRemaining}ms for ${gameData.username}`);
+            
+            // Set timeout to send data after the remaining time
+            setTimeout(() => {
+                // Update the game data with actual completion
+                gameData.completed = true;
+                gameData.actualPlayDuration = Math.floor((new Date() - new Date(gameData.timeStarted)) / 1000);
+                
+                // Send data to server
+                sendGameData(gameData);
+                
+                // Clear the pending data
+                localStorage.removeItem('pendingGameData');
+                localStorage.removeItem('gameSendTime');
+                
+                // Show notification that coins were earned
+                showEarnedCoinsNotification(gameData.coinsEarned, gameData.username);
+            }, timeRemaining);
+        }
+        
+        // Function to send data to the API
+        function sendGameData(gameData) {
+            fetch('https://api.edura.example/game-activity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(gameData),
+                keepalive: true // This allows the request to complete even if page is changed
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Game data sent successfully for user:', gameData.username);
+                    // Update user coins in localStorage for persistence across pages
+                    updateUserCoins(gameData.coinsEarned);
+                    return response.json();
+                } else {
+                    console.error('Failed to send game data');
+                    throw new Error('Server responded with error');
+                }
+            })
+            .then(data => {
+                console.log('Server response:', data);
+                // You could update UI based on server response if needed
+            })
+            .catch(error => {
+                console.error('Error sending game data:', error);
+                
+                // If there's an error, store the data to try again later
+                const failedRequests = JSON.parse(localStorage.getItem('failedGameRequests') || '[]');
+                failedRequests.push(gameData);
+                localStorage.setItem('failedGameRequests', JSON.stringify(failedRequests));
+            });
+        }
+        
+        // Function to update user coins
+        function updateUserCoins(coinsEarned) {
+            const currentCoins = parseInt(localStorage.getItem('userCoins') || '0');
+            const newCoins = currentCoins + coinsEarned;
+            localStorage.setItem('userCoins', newCoins.toString());
+            
+            // If there's a coins display element on the page, update it
+            const coinsDisplay = document.querySelector('.coins-display');
+            if (coinsDisplay) {
+                coinsDisplay.textContent = newCoins;
+            }
+        }
+        
+        // Function to show notification that coins were earned
+        function showEarnedCoinsNotification(coins, username) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#ff6b00';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '9999';
+            notification.style.transition = 'all 0.3s ease';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(20px)';
+            notification.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">🎮</div>
+                    <div>
+                        <div style="font-weight:bold;margin-bottom:5px;">Congratulations, ${username}!</div>
+                        <div>You earned <span style="font-weight:bold;font-size:1.1em;">${coins} coins</span></div>
+                    </div>
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+        
+        // Retry sending failed requests
+        function retryFailedRequests() {
+            const failedRequests = JSON.parse(localStorage.getItem('failedGameRequests') || '[]');
+            if (failedRequests.length > 0) {
+                console.log(`Attempting to resend ${failedRequests.length} failed requests`);
+                
+                const newFailedRequests = [];
+                failedRequests.forEach(request => {
+                    fetch('https://api.edura.example/game-activity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(request),
+                        keepalive: true
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            newFailedRequests.push(request);
+                        }
+                    })
+                    .catch(() => {
+                        newFailedRequests.push(request);
+                    });
+                });
+                
+                // Update the failed requests in localStorage
+                localStorage.setItem('failedGameRequests', JSON.stringify(newFailedRequests));
+            }
+        }
+        
+        // Try to resend failed requests when page loads
+        retryFailedRequests();
+    });
+  </script>  
+</body>
+</html>

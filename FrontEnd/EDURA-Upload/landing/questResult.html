@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contest Rooms & Results</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { 
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      background-color: #f0f8ff;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23aaccff' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 650px;
+      margin: 20px auto;
+      background: #fff; 
+      padding: 25px;
+      border-radius: 15px; 
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      border: 3px solid #4b7bec;
+    }
+    .stars {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: #fed330;
+    }
+    h1, h2 {
+      color: #4b7bec;
+      text-align: center;
+      margin-top: 0;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 22px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    input {
+      border: 2px solid #a5b1c2;
+    }
+    input:focus {
+      outline: none;
+      border-color: #4b7bec;
+      box-shadow: 0 0 5px rgba(75, 123, 236, 0.5);
+    }
+    button {
+      background: #4b7bec; 
+      color: #fff;
+      border: none; 
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover { 
+      background: #3867d6; 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    #roomList {
+      list-style-type: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+    #roomList li {
+      background: #f9f9f9;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid #e0e0e0;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #roomList li:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-color: #4b7bec;
+    }
+    .room-id {
+      font-weight: bold;
+      color: #4b7bec;
+    }
+    .room-date {
+      color: #636e72;
+      font-size: 14px;
+    }
+    /* Retaining the original theme for the results section */
+    #histogram {
+      margin: 20px 0;
+      padding: 15px 0;
+    }
+    /* Added styles for Chart.js canvas and analysis text */
+    #resultsChart {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .analysis {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #2d3436;
+    }
+    /* Responsive styles (unchanged) */
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
+      .username {
+        width: 25%;
+      }
+      .score {
+        right: -35px;
+      }
+    }
+    @media (max-width: 480px) {
+      .container {
+        width: 98%;
+        padding: 15px;
+        border-width: 2px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      .username {
+        width: 30%;
+        font-size: 13px;
+      }
+      .result-row {
+        margin: 8px 0;
+      }
+      .bar-container {
+        height: 25px;
+      }
+      .score {
+        right: -30px;
+        font-size: 13px;
+      }
+      #roomList li {
+        padding: 10px;
+        font-size: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .room-date {
+        margin-top: 5px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="stars">★★★</div>
+  <h1>Quest History</h1>
+  
+  <button onclick="fetchRoomList()">Show My Quest History</button>
+
+  <h2>Quest Room History</h2>
+  <ul id="roomList"></ul>
+
+  <h2>Quest Results</h2>
+  <!-- The histogram div now contains the Chart.js canvas -->
+  <div id="histogram">
+    <canvas id="resultsChart"></canvas>
+  </div>
+  <!-- Analysis section for additional insights -->
+  <div class="analysis" id="analysis"></div>
+</div>
+
+<script>
+  // API base URL
+  const apiBase = "http://iiit1127.us-east-2.elasticbeanstalk.com";
+
+  // Fetch username from localStorage on page load
+  document.addEventListener("DOMContentLoaded", function() {
+    const username = localStorage.getItem("parentUsername");
+    if (username) {
+      fetchRoomList(username);
+    }
+  });
+
+  // 1) Fetch the list of rooms for a given username
+  function fetchRoomList(providedUsername = null) {
+    const username = providedUsername || localStorage.getItem("parentUsername");
+    if (!username) {
+      showToast("Please log in first!", "error");
+      return;
+    }
+
+    fetch(`${apiBase}/api/contest/list/${encodeURIComponent(username)}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const listContainer = document.getElementById("roomList");
+        listContainer.innerHTML = "";
+        if (Array.isArray(data) && data.length > 0) {
+          data.forEach(item => {
+            const li = document.createElement("li");
+            let dateTime;
+            try {
+              const dateObj = new Date(item.localDateTime);
+              dateTime = dateObj.toLocaleString();
+            } catch (e) {
+              dateTime = item.localDateTime;
+            }
+            const roomIdSpan = document.createElement("span");
+            roomIdSpan.className = "room-id";
+            roomIdSpan.textContent = `Quest Room: ${item.roomId}`;
+            const dateSpan = document.createElement("span");
+            dateSpan.className = "room-date";
+            dateSpan.textContent = dateTime;
+            li.appendChild(roomIdSpan);
+            li.appendChild(dateSpan);
+            li.addEventListener("click", () => {
+              fetchResults(item.roomId);
+              document.querySelectorAll("#roomList li").forEach(el => {
+                el.style.borderColor = "#e0e0e0";
+                el.style.background = "#f9f9f9";
+              });
+              li.style.borderColor = "#4b7bec";
+              li.style.background = "#f0f8ff";
+            });
+            listContainer.appendChild(li);
+          });
+        } else {
+          listContainer.innerHTML = '<p class="no-results">No quests found for this adventurer.</p>';
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        showToast("An error occurred while fetching the room list.", "error");
+      });
+  }
+
+  // 2) Fetch contest results for a given room code
+  async function fetchResults(roomCode) {
+    try {
+      const response = await fetch(`${apiBase}/api/contest/result/${encodeURIComponent(roomCode)}`);
+      if (!response.ok) {
+        const err = await response.text();
+        showToast("Error: " + err, "error");
+        return;
+      }
+      const results = await response.json();
+      renderChart(results);
+    } catch (error) {
+      showToast("Error fetching results.", "error");
+      console.error(error);
+    }
+  }
+
+  // 3) Render a vertical bar chart using Chart.js along with analysis
+  function renderChart(results) {
+    const ctx = document.getElementById("resultsChart").getContext("2d");
+
+    if (!Array.isArray(results) || results.length === 0) {
+      document.getElementById("analysis").innerHTML = '<p class="no-results">No results available for this quest.</p>';
+      return;
+    }
+
+    // Prepare data
+    const usernames = results.map(r => r.username);
+    const scores = results.map(r => r.score);
+    const maxScore = Math.max(...scores);
+    const minScore = Math.min(...scores);
+    const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+
+    // Display analysis
+    document.getElementById("analysis").textContent = `Participants: ${scores.length} | Highest Score: ${maxScore} | Lowest Score: ${minScore} | Avg Score: ${avgScore}`;
+
+    // Destroy any existing chart instance to avoid duplicates
+    if (window.resultsChartInstance) {
+      window.resultsChartInstance.destroy();
+    }
+
+    // Create vertical bar chart
+    window.resultsChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: usernames,
+        datasets: [{
+          label: 'Scores',
+          data: scores,
+          backgroundColor: '#4b7bec',
+          borderWidth: 1,
+          borderRadius: 8,
+          hoverBackgroundColor: '#3867d6'
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { precision: 0 }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }
+
+  // Toast notification function
+  function showToast(message, type) {
+    let toastContainer = document.getElementById("toastContainer");
+    if (!toastContainer) {
+      toastContainer = document.createElement("div");
+      toastContainer.id = "toastContainer";
+      toastContainer.style.position = "fixed";
+      toastContainer.style.top = "20px";
+      toastContainer.style.right = "20px";
+      toastContainer.style.zIndex = "9999";
+      document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    toast.style.minWidth = "200px";
+    toast.style.marginBottom = "10px";
+    toast.style.padding = "10px 20px";
+    toast.style.borderRadius = "8px";
+    toast.style.color = "#fff";
+    toast.style.fontWeight = "bold";
+    toast.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.3s ease-in-out";
+    toast.style.backgroundColor = type === "error" ? "#eb4d4b" : "#27ae60";
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => { toast.style.opacity = "1"; }, 100);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => { toast.remove(); }, 300);
+    }, 3000);
+  }
+</script>
+</body>
+</html>

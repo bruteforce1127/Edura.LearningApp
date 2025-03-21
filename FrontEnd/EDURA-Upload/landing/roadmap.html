@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Learning Roadmap</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #e0e0e0;
+      background: #0f0f1a;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .grid-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(50, 100, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(50, 100, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+    }
+    
+    .glow {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(64, 33, 100, 0.15) 0%, rgba(32, 16, 50, 0) 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    h1 {
+      font-size: 3.2em;
+      margin-bottom: 12px;
+      font-weight: 800;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      letter-spacing: -0.5px;
+    }
+    
+    .subtitle {
+      font-size: 1.1em;
+      color: #9ca3af;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+    
+    .mic-button {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #6366f1, #a855f7);
+      box-shadow: 0 8px 24px rgba(163, 85, 247, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 40px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+      position: relative;
+    }
+    
+    .mic-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(163, 85, 247, 0.35);
+    }
+    
+    .mic-button:active {
+      transform: translateY(0) scale(0.95);
+    }
+    
+    .mic-icon {
+      width: 30px;
+      height: 30px;
+      fill: white;
+    }
+    
+    .pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: scale(0);
+      opacity: 0;
+    }
+    
+    .animate-pulse {
+      animation: pulse 1.5s ease-out;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    
+    .roadmap {
+      background: rgba(17, 17, 34, 0.8);
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(99, 102, 241, 0.15);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+      backdrop-filter: blur(8px);
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    h2 {
+      color: #e0e0e0;
+      margin: 24px 0 16px;
+      font-size: 1.7em;
+      position: relative;
+      display: inline-block;
+      font-weight: 700;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 40%;
+      height: 3px;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      border-radius: 3px;
+    }
+    
+    .bullet-list {
+      list-style: none;
+      margin: 18px 0;
+      padding-left: 10px;
+    }
+    
+    .bullet-list li {
+      margin: 14px 0;
+      position: relative;
+      padding-left: 28px;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideIn 0.5s ease forwards;
+      line-height: 1.6;
+    }
+    
+    .bullet-list li:nth-child(1) { animation-delay: 0.15s; }
+    .bullet-list li:nth-child(2) { animation-delay: 0.3s; }
+    .bullet-list li:nth-child(3) { animation-delay: 0.45s; }
+    .bullet-list li:nth-child(4) { animation-delay: 0.6s; }
+    .bullet-list li:nth-child(5) { animation-delay: 0.75s; }
+    
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 2px;
+      transform: rotate(45deg);
+    }
+    
+    .section {
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(30, 30, 50, 0.3);
+      border-radius: 12px;
+      border-left: 3px solid #6366f1;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    strong {
+      color: #d4d4ff;
+      font-weight: 600;
+    }
+    
+    .emphasis {
+      color: #a855f7;
+      font-weight: 600;
+    }
+    
+    .milestone {
+      position: relative;
+      margin-bottom: 35px;
+      padding-left: 32px;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fade-up 0.7s ease forwards;
+    }
+    
+    .milestone:nth-child(1) { animation-delay: 0.2s; }
+    .milestone:nth-child(2) { animation-delay: 0.4s; }
+    .milestone:nth-child(3) { animation-delay: 0.6s; }
+    
+    @keyframes fade-up {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .milestone::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 12px;
+      height: 12px;
+      background: #6366f1;
+      border-radius: 4px;
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+      z-index: 1;
+    }
+    
+    .connection-line {
+      position: absolute;
+      height: calc(100% + 20px);
+      width: 2px;
+      left: 6px;
+      top: 22px;
+      background: linear-gradient(to bottom, #6366f1 60%, rgba(99, 102, 241, 0.1));
+      z-index: 0;
+    }
+    
+    .listen-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      margin: 30px auto 0;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 15px rgba(99, 102, 241, 0.25);
+    }
+    
+    .listen-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+    
+    .listen-btn:active {
+      transform: translateY(0);
+    }
+    
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    p {
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin: 30px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      border-radius: 3px;
+      animation: progress 1.5s ease-out forwards;
+    }
+    
+    @keyframes progress {
+      to { width: 75%; }
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-box {
+      background: rgba(30, 30, 50, 0.5);
+      border-radius: 12px;
+      padding: 20px;
+      flex: 1;
+      min-width: 160px;
+      margin: 10px;
+      text-align: center;
+      border: 1px solid rgba(99, 102, 241, 0.1);
+    }
+    
+    .stat-number {
+      font-size: 2.4em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 0.9em;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-background"></div>
+  <div class="glow"></div>
+  <div class="particles" id="particles"></div>
+  
+  <div class="container">
+    <div class="header">
+      <h1>Your Learning Journey</h1>
+      <p class="subtitle">Personalized path to mastery based on your learning style</p>
+    </div>
+    <!-- <button id="download-response-btn" class="listen-btn">📥 Download Roadmap</button> -->
+
+
+    
+    
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number" id="accuracy-value">Fetching...</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+    </div>
+    
+    
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    
+    <div id="roadmap" class="roadmap">
+      <!-- Roadmap content will be loaded here -->
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById("download-response-btn").addEventListener("click", function () {
+        const roadmapElement = document.getElementById("roadmap");
+
+        // Ensure the response is loaded
+        if (!roadmapElement || roadmapElement.innerHTML.trim() === "" || roadmapElement.innerHTML.includes("Generating")) {
+            alert("AI response is not available yet. Please wait for it to load.");
+            return;
+        }
+
+        // Convert AI response to a downloadable PDF
+        html2pdf()
+            .from(roadmapElement)
+            .set({
+                margin: 10,
+                filename: 'AI_Generated_Roadmap.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            })
+            .save();
+    });
+</script>
+
+
+  <script>
+
+    const baseUrl = "http://iiit1127.us-east-2.elasticbeanstalk.com";
+let currentUtterance = null; // Track current speech
+
+// Get the username from localStorage
+const username = localStorage.getItem("loginUsername") || "user"; // Default to "user" if not found
+
+async function fetchUserAccuracy() {
+    const username = localStorage.getItem("loginUsername");
+
+    if (!username) {
+        console.error("Username not found in localStorage");
+        return;
+    }
+
+    try {
+        const url = `${baseUrl}/leaderboard/accuracy/${encodeURIComponent(username)}`;
+        console.log("Fetching accuracy from:", url);
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const accuracyValue = data.accuracy ? `${parseFloat(data.accuracy).toFixed(2)}%` : "N/A";
+
+        console.log("Accuracy loaded successfully:", accuracyValue);
+        document.getElementById("accuracy-value").textContent = accuracyValue;
+    } catch (error) {
+        console.error("Error fetching accuracy:", error);
+        document.getElementById("accuracy-value").textContent = "N/A";
+    }
+}
+
+// Call function on page load
+document.addEventListener("DOMContentLoaded", () => {
+    fetchUserAccuracy();
+    generateRoadmap(username);
+    createParticles();
+});
+
+// Function to format the roadmap text
+function formatRoadmapText(text) {
+    const lines = text.split("\n");
+    let inList = false;
+    let html = '';
+
+    lines.forEach((line) => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        let content = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        if (content.startsWith("***")) {
+            html += `<h1>${content.replace(/^\*{3}/, '').trim()}</h1>`;
+        } else if (content.startsWith("**")) {
+            html += `<h2>${content.replace(/^\*{2}/, '').trim()}</h2>`;
+        } else if (content.startsWith("*")) {
+            if (!inList) {
+                inList = true;
+                html += `<ul class="bullet-list"><li>${content.replace(/^\*/, '').trim()}</li>`;
+            } else {
+                html += `<li>${content.replace(/^\*/, '').trim()}</li>`;
+            }
+        } else {
+            if (inList) {
+                html += `</ul>`;
+                inList = false;
+            }
+
+            html += content.includes("Phase") || content.includes("Step") || content.includes("Stage") ?
+                `<div class="milestone"><div class="connection-line"></div>${content}</div>` :
+                `<p>${content}</p>`;
+        }
+    });
+
+    if (inList) {
+        html += '</ul>';
+    }
+
+    return html;
+}
+
+// Function to generate the roadmap
+function generateRoadmap(username) {
+    const url = `${baseUrl}/generate-roadmap/${username}`;
+    document.getElementById('roadmap').innerHTML = '<div style="text-align: center; padding: 40px;">Generating your personalized journey...</div>';
+
+    fetch(url, { method: "POST" })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            let extractedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+            if (extractedText.trim() !== "") {
+                document.getElementById('roadmap').innerHTML = formatRoadmapText(extractedText);
+
+                const listenButton = document.createElement("button");
+                listenButton.innerHTML = '🔊 Listen to Your Journey';
+                listenButton.classList.add("listen-btn");
+                listenButton.onclick = () => speakText(extractedText);
+
+                document.getElementById('roadmap').appendChild(listenButton);
+            } else {
+                document.getElementById('roadmap').innerHTML = `<div style="text-align: center; padding: 40px; color: #f87171;">Unable to generate your journey. Please try again.</div>`;
+            }
+        })
+        .catch(err => {
+            document.getElementById('roadmap').innerHTML = `<div style="text-align: center; padding: 40px; color: #f87171;">Error: ${err.message}</div>`;
+        });
+}
+
+// Function to handle speech synthesis
+function speakText(text) {
+    if ('speechSynthesis' in window && text.trim() !== "") {
+        stopSpeech();
+
+        currentUtterance = new SpeechSynthesisUtterance(text);
+        currentUtterance.lang = 'hi-IN';
+        currentUtterance.rate = 1;
+        currentUtterance.pitch = 1;
+
+        const voices = speechSynthesis.getVoices();
+        const hindiVoice = voices.find(voice => voice.lang === "hi-IN" && voice.name.includes("Female"));
+
+        if (hindiVoice) {
+            currentUtterance.voice = hindiVoice;
+        }
+
+        speechSynthesis.speak(currentUtterance);
+    }
+}
+
+// Function to stop speech
+function stopSpeech() {
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+    }
+}
+
+// Stop speech when switching tabs or leaving the page
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        stopSpeech();
+    }
+});
+
+// Stop speech when closing the page
+window.addEventListener("beforeunload", stopSpeech);
+
+// Create animated particles background
+function createParticles() {
+    const container = document.getElementById('particles');
+    const particleCount = 30;
+
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(container);
+    }
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+
+    const size = Math.random() * 3 + 2;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+
+    const posX = Math.random() * 100;
+    const posY = Math.random() * 100;
+    particle.style.left = `${posX}%`;
+    particle.style.top = `${posY}%`;
+
+    particle.style.opacity = Math.random() * 0.5 + 0.1;
+
+    container.appendChild(particle);
+    animateParticle(particle);
+}
+
+function animateParticle(particle) {
+    const currentLeft = parseFloat(particle.style.left);
+    const currentTop = parseFloat(particle.style.top);
+
+    const moveX = (Math.random() - 0.5) * 0.5;
+    const moveY = (Math.random() - 0.5) * 0.5;
+
+    let newLeft = currentLeft + moveX;
+    let newTop = currentTop + moveY;
+
+    newLeft = Math.max(0, Math.min(100, newLeft));
+    newTop = Math.max(0, Math.min(100, newTop));
+
+    particle.style.left = `${newLeft}%`;
+    particle.style.top = `${newTop}%`;
+
+    if (Math.random() > 0.95) {
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+    }
+
+    requestAnimationFrame(() => animateParticle(particle));
+}
+
+// Handle voice loading issues
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = function() {
+        console.log("Voices loaded");
+    };
+}
+
+  </script>
+  </body>
+  </html>

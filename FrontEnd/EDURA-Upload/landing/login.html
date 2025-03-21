@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edura - Learning Platform</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <!-- <script src="/js/jwt.js"></script> -->
+</head>
+<body>
+    <div class="main-container">
+        <div class="signup-container" id="registerForm">
+            <div class="left-panel">
+                <div class="logo-corner"></div>
+                <!-- Mobile/landscape oriented image -->
+                <img src="https://img.freepik.com/free-vector/kids-online-lessons_52683-36818.jpg" alt="Learning Kids" class="mobile-img">
+                <!-- Desktop/portrait oriented image -->
+                <!-- <img src="/img/login.png" alt="Boy Character" class="desktop-img"> -->
+                <img src="https://img.freepik.com/free-vector/kids-online-lessons_52683-36818.jpg" alt="Boy Character" class="desktop-img">
+            </div>
+            <div class="right-panel">
+                <div class="header-container">
+                    <h2>Parent Registration</h2>
+                </div>
+                <form onsubmit="handleRegistration(event)">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-container">
+                            <input type="password" id="password" name="password" required>
+                            <div class="password-toggle" onclick="togglePasswordVisibility('password', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="childrenList">
+                        
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addChild()">Add Child</button>
+                    
+                    <button type="submit" class="btn-signup">Sign Up</button>
+                    <div class="login-link">
+                        Already a member? <a href="#" onclick="showForm('login')">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="signup-container" id="loginForm" style="display: none;">
+            <div class="left-panel">
+                <div class="logo-corner"></div>
+                <!-- Mobile/landscape oriented image -->
+                <!-- <img src="https://img.freepik.com/free-vector/kids-online-lessons_52683-36818.jpg" alt="Learning Kids" class="mobile-img"> -->
+                <img src="https://img.freepik.com/free-vector/urban-boy-character_1308-28395.jpg" alt="Learning Kids" class="mobile-img">
+                <!-- Desktop/portrait oriented image -->
+                <img src="https://img.freepik.com/free-vector/kids-online-lessons_52683-36818.jpg" alt="Boy Character" class="desktop-img">
+            </div>
+            <div class="right-panel">
+                <div class="header-container">
+                    <h2>Login</h2>
+                </div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="password-container">
+                            <input type="password" id="loginPassword" required>
+                            <div class="password-toggle" onclick="togglePasswordVisibility('loginPassword', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-signup">Login</button>
+                    <div class="login-link">
+                        Don't have an account? <a href="#" onclick="showForm('register')">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    <script src="/js/login.js"></script>
+</body>

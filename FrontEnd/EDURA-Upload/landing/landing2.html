@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edura - Fun Learning Games</title>
+    <!-- <link rel="stylesheet" href="grid.css"> -->
+    <link rel="stylesheet" href="/css/footer.css">
+    <!-- <link rel="stylesheet" href="test.css"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reading.css">
+    <link rel="stylesheet" href="/css/activities.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <link rel="stylesheet" href="/css/quizsection.css">
+    <script src="/js/quizsection.js"></script>
+    <script src="/js/landing.js"></script>
+    <style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+        .game-section {
+            background-color: #f0f9ff;
+            background-image: linear-gradient(135deg, #c7eeff 25%, transparent 25%),
+                linear-gradient(225deg, #c7eeff 25%, transparent 25%),
+                linear-gradient(45deg, #c7eeff 25%, transparent 25%),
+                linear-gradient(315deg, #c7eeff 25%, #f0f9ff 25%);
+            background-position: 40px 0, 40px 0, 0 0, 0 0;
+            background-size: 80px 80px;
+            min-height: 70vh;
+            padding: 20px 0;
+          }
+          
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+          
+        .heading {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+          
+        .heading h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff5e7e, #ff9671, #ffc75f, #f9f871, #90ee90, #9ee8ff, #c199fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+            animation: rainbow 6s ease infinite;
+            background-size: 400% 400%;
+        }
+          
+        .heading p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+        }
+          
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+          
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+          
+        /* Simplified Card styles */
+        .card {
+            position: relative;
+            width: 280px;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+          
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+          
+        .card-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+          
+        .card-title {
+            background-color: #ffffff;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+          
+        .card:nth-child(1) {
+            background-color: #ffcccb;
+        }
+          
+        .card:nth-child(2) {
+            background-color: #c7ffcc;
+        }
+          
+        .card:nth-child(3) {
+            background-color: #ccf2ff;
+        }
+          
+        .card:nth-child(4) {
+            background-color: #fff2cc;
+        }
+          
+        .card:nth-child(5) {
+            background-color: #e0ccff;
+        }
+          
+        .card:nth-child(6) {
+            background-color: #ffdfcc;
+        }
+          
+        .card a {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+          
+        /* Floating math symbols animation */
+        .math-symbols {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+          
+        .symbol {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 2rem;
+            font-weight: bold;
+            animation: float 10s linear infinite;
+        }
+          
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+          
+        @media (max-width: 768px) {
+            .heading h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        .learning-streak {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+        .learning-streak-icon {
+            width: 24px;
+            height: 24px;
+            margin-left: 5px;
+        }
+        .profile-button img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .scroller-container {
+            width: 100%;
+            height: 30vh;
+            position: relative;
+            overflow: hidden;
+            background-color: rgb(255 168 30);
+            padding: 20px 20px;
+        }
+        
+        .scroller {
+            display: flex;
+            height: 100%;
+            animation: scroll 60s linear infinite;
+        }
+        
+        .scroller:hover {
+            animation-play-state: paused;
+        }
+        
+        .image-container {
+            min-width: 300px;
+            height: 100%;
+            margin: 0 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            text-indent: -9999px; /* Hide the text off-screen */
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .image-container {
+                min-width: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .image-container {
+                min-width: 150px;
+            }
+        }
+
+        /* Coin UI Styles */
+        .coins-container {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .coins-container:hover {
+            background-color: rgba(255, 215, 0, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .coin-icon {
+            width: 22px;
+            height: 22px;
+            margin-right: 5px;
+            background-color: gold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #996515;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .coins-count {
+            font-weight: bold;
+            color: #996515;
+        }
+
+        /* Game loading overlay */
+        .game-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .game-loading-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+        
+        .coins-text {
+            color: #996515;
+            font-weight: bold;
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .game-learning-text {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+        }
+        
+        .countdown {
+            font-weight: bold;
+            font-size: 20px;
+            color: #3498db;
+        }
+        
+        /* Animation for earning coins */
+        @keyframes coinPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .coin-animation {
+            animation: coinPop 0.5s ease;
+        }
+        /*dashboard*/
+        .btn {
+            position: relative;
+            font-size: 17px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 1em 2.5em;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 6em;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+            font-weight: 500;
+            color: #f9f871;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?ga=GA1.1.819117088.1741619640&semt=ais_hybrid');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+          }
+          
+          .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+          }
+          
+          .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+          }
+          
+          .btn::after {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            border-radius: 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            transition: all 0.4s;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?ga=GA1.1.819117088.1741619640&semt=ais_hybrid');
+            background-size: cover;
+            background-position: center;
+          }
+          
+          .btn:hover::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+          }
+          
+          /* Link wrapper */
+          .btn-link {
+            display: inline-block;
+            text-decoration: none;
+          }
+          img#detective{
+            width: 50px;
+          }
+          
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="logo-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">E</div>
+                <span>Edura</span>
+            </a>
+        </div>
+        <button class="mobile-menu-button">☰</button>
+        <div class="nav-links">
+            
+            <a href="/landing/about.html" class="nav-link">About</a>
+            <a href="/landing/startQuest.html" class="nav-link">Quest 🔥</a>
+            <a href="/landing/Detective.html" class="nav-link"><img src="/img/detectivebg.png" alt="" id="detective" ></a>          
+            <div class="learning-streak">
+                <img src="/img/flame.png" alt="Streak" class="learning-streak-icon">
+    
+                5
+                
+            </div>
+            <!-- New Coins UI Component -->
+            <div class="coins-container">
+                <div class="coin-icon">$</div>
+                <span class="coins-count" id="userCoins">0</span>
+            </div>
+            <div class="profile-container">
+                
+                    <a href="dashboard.html" class="btn-link">
+                        <button class="btn">
+                          Dashboard
+                        </button>
+                      </a>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="banner">
+        <iframe class="banner-iframe" src="https://www.mindlygames.com/games/banner/index.html" title="Interactive Banner"></iframe>
+        <div class="banner-content">
+            <h1 id="time-greeting">Good Afternoon, Learner!</h1>
+            <p>Lets learn and play together!</p>
+        </div>
+    </div>
+
+    <div class="scroller-container">
+        <div class="scroller">
+            <!-- First set of images -->
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F5067ca6a64d1138ab6a31404ea90ebfde92e6c3f-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 1">
+                <a href="/games/classK/Identifyingnumber.html" class="image-link">Link 1</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F6a1bd11ee54a896693496f30552e268c8d43be1d-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 2">
+                <a href="/games/class2/divisionby1.html" class="image-link">Link 2</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F538beaacc42e99c635fd37ca165ef74b4b6e9632-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 3">
+                <a href="/games/class2/Numberman'spizza.html" class="image-link">Link 3</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fc341f968cb665d434d0b7539978fb89a45d882dd-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 4">
+                <a href="/games/class2/Multiplymagic.html" class="image-link">Link 4</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F0c87dc315f0e96086b34aa15878f200d3119c1a5-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 5">
+                <a href="/games/class2/Dinosour.html" class="image-link">Link 5</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fd6d46ef066b737149067ea826431ee0a7b583d03-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 6">
+                <a href="/games/class2/Dinoeggs.html" class="image-link">Link 6</a>
+            </div>
+            <div class="image-container">
+                <img src="https://imgs.search.brave.com/oxSdqeVmo3T5NAFcO1zKvZvkVge2XyhfqTjpwLnPEPQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS50dXJ0bGVkaWFy/eS5jb20vZ2FtZXMv/c3Bhbi9raW5kZXJn/YXJ0ZW4tcGFydG5l/cnMtaW4tcmh5bWUu/cG5n" alt="Landscape 7">
+                <a href="/games/class2/rhymingWords.html" class="image-link">Link 7</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.educagaming.com//userData//images/logo_512_512.png" alt="Landscape 8">
+                <a href="/games/class2/animalSound.html" class="image-link">Link 8</a>
+            </div>
+            <div class="image-container">
+                <img src="https://cdn.splashmath.com/curriculum_uploads/images/playables/jabber_bots_1.png" alt="Landscape 9">
+                <a href="/games/class2/buildingConsonants.html" class="image-link">Link 9</a>
+            </div>
+            <div class="image-container">
+                <img src="https://assets.sooperbooks.com/story-pics/ac2501a1-3a58-4fa4-91bd-0e60a96dc1c4the-dog-and-his-reflection-bedtime-story-animated-cover.375x500.webp" alt="Landscape 10">
+                <a href="/games/class2/theDogAndReflection.html" class="image-link">Link 10</a>
+            </div>
+            
+            <!-- Duplicate set of images for seamless looping -->
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F5067ca6a64d1138ab6a31404ea90ebfde92e6c3f-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 1">
+                <a href="/games/class2/Identifyingthenumber.html" class="image-link">Link 1</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F6a1bd11ee54a896693496f30552e268c8d43be1d-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 2">
+                <a href="/games/class2/divisionby1.html" class="image-link">Link 2</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F538beaacc42e99c635fd37ca165ef74b4b6e9632-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 3">
+                <a href="/games/class2/Numberman'spizza.html" class="image-link">Link 3</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fc341f968cb665d434d0b7539978fb89a45d882dd-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 4">
+                <a href="/games/class2/Multiplymagic.html" class="image-link">Link 4</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F0c87dc315f0e96086b34aa15878f200d3119c1a5-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 5">
+                <a href="/games/class2/Dinosour.html" class="image-link">Link 5</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fd6d46ef066b737149067ea826431ee0a7b583d03-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Landscape 6">
+                <a href="/games/class2/Dinoeggs.html" class="image-link">Link 6</a>
+            </div>
+            <div class="image-container">
+                <img src="https://imgs.search.brave.com/oxSdqeVmo3T5NAFcO1zKvZvkVge2XyhfqTjpwLnPEPQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS50dXJ0bGVkaWFy/eS5jb20vZ2FtZXMv/c3Bhbi9raW5kZXJn/YXJ0ZW4tcGFydG5l/cnMtaW4tcmh5bWUu/cG5n" alt="Landscape 7">
+                <a href="/games/class2/rhymingWords.html" class="image-link">Link 7</a>
+            </div>
+            <div class="image-container">
+                <img src="https://www.educagaming.com//userData//images/logo_512_512.png" alt="Landscape 8">
+                <a href="/games/class2/animalSound.html" class="image-link">Link 8</a>
+            </div>
+            <div class="image-container">
+                <img src="https://cdn.splashmath.com/curriculum_uploads/images/playables/jabber_bots_1.png" alt="Landscape 9">
+                <a href="/games/class2/buildingConsonants.html" class="image-link">Link 9</a>
+            </div>
+            <div class="image-container">
+                <img src="https://assets.sooperbooks.com/story-pics/ac2501a1-3a58-4fa4-91bd-0e60a96dc1c4the-dog-and-his-reflection-bedtime-story-animated-cover.375x500.webp" alt="Landscape 10">
+                <a href="/games/class2/theDogAndReflection.html" class="image-link">Link 10</a>
+            </div>
+        </div>
+    </div>
+    <section class="quiz-section">
+        <!-- Colorful Background Elements -->
+        <div class="background">
+          <div class="color-dots">
+            <div class="color-dot dot1"></div>
+            <div class="color-dot dot2"></div>
+            <div class="color-dot dot3"></div>
+            <div class="color-dot dot4"></div>
+          </div>
+          <div class="overlay-pattern"></div>
+          <div class="geo-shapes">
+            <div class="shape circle"></div>
+            <div class="shape triangle"></div>
+            <div class="shape square"></div>
+          </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="quiz-container">
+          <div class="container-border"></div>
+          <span class="badge">Quiz Challenge</span>
+          <h2 class="quiz-heading">Test Your Brilliance</h2>
+          <p class="quiz-text">Challenge yourself with our vibrant interactive quizzes designed to make learning fun and engaging while reinforcing key concepts.</p>
+          <button class="quiz-btn">
+            <a href="/landing/quiz.html" id="link">Start Your Quiz</a>
+            
+          </button>
+          
+          
+        </div>
+      </section>
+    <section class="game-section">
+        <div class="math-symbols">
+            <span class="symbol" style="left: 10%; animation-delay: 0s; animation-duration: 15s;">+</span>
+            <span class="symbol" style="left: 25%; animation-delay: 2s; animation-duration: 12s;">−</span>
+            <span class="symbol" style="left: 40%; animation-delay: 4s; animation-duration: 18s;">×</span>
+            <span class="symbol" style="left: 55%; animation-delay: 6s; animation-duration: 14s;">÷</span>
+            <span class="symbol" style="left: 70%; animation-delay: 8s; animation-duration: 16s;">=</span>
+            <span class="symbol" style="left: 85%; animation-delay: 10s; animation-duration: 13s;">π</span>
+        </div>
+        
+        <div class="container">
+            <div class="heading">
+                <h1>Math Magic Playground</h1>
+                <p>Turn numbers into adventures with our fun math games!</p>
+            </div>
+            
+            <div class="cards-container">
+                <!-- Card 1 -->
+                <div class="card">
+                    <a href="/games/class2/AdditionDoubles.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F5067ca6a64d1138ab6a31404ea90ebfde92e6c3f-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Addition Doubles" class="card-image">
+                    <div class="card-title">Addition Doubles</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card">
+                    <a href="/games/class2/Numberman'spizza.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F538beaacc42e99c635fd37ca165ef74b4b6e9632-960x613.jpg%3Fauto%3Dformat&w=640&q=75" class="card-image">
+                    <div class="card-title">Numberman's Pizza</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="card">
+                    <a href="/games/class2/divisionby1.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F6a1bd11ee54a896693496f30552e268c8d43be1d-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Multiplication Quest" class="card-image">
+                    <div class="card-title">Space Race</div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="card">
+                    <a href="/games/class2/Multiplymagic.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fc341f968cb665d434d0b7539978fb89a45d882dd-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Geometry Genius" class="card-image">
+                    <div class="card-title">Multiply Magic</div>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="card">
+                    <a href="/games/class2/Dinosour.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2F0c87dc315f0e96086b34aa15878f200d3119c1a5-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Math Monsters" class="card-image">
+                    <div class="card-title">DinoSour</div>
+                </div>
+                
+                <!-- Card 6 -->
+                <div class="card">
+                    <a href="/games/class2/Dinoeggs.html"></a>
+                    <img src="https://www.mindlygames.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzm8ai1fm%2Fproduction%2Fd6d46ef066b737149067ea826431ee0a7b583d03-960x613.jpg%3Fauto%3Dformat&w=640&q=75" alt="Puzzle Wizards" class="card-image">
+                    <div class="card-title">Dino Eggs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="reading-section">
+        <div class="reading-elements">
+            <span class="element" style="left: 10%; animation-delay: 0s; animation-duration: 15s;">📚</span>
+            <span class="element" style="left: 25%; animation-delay: 2s; animation-duration: 12s;">📖</span>
+            <span class="element" style="left: 40%; animation-delay: 4s; animation-duration: 18s;">📝</span>
+            <span class="element" style="left: 55%; animation-delay: 6s; animation-duration: 14s;">🔤</span>
+            <span class="element" style="left: 70%; animation-delay: 8s; animation-duration: 16s;">📘</span>
+            <span class="element" style="left: 85%; animation-delay: 10s; animation-duration: 13s;">✏️</span>
+        </div>
+        
+        <div class="container">
+            <div class="heading">
+                <h1>Reading Adventure World</h1>
+                <p>Explore amazing stories and improve your reading skills!</p>
+            </div>
+            
+            <div class="cards-container">
+                <!-- Card 1 -->
+                <div class="card">
+                    <a href="/games/class2/animalSound.html"></a>
+                    <img src="https://www.educagaming.com//userData//images/logo_512_512.png" alt="Storytime Express" class="card-image">
+                    <div class="card-title">Animal sound</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card">
+                    <a href="/games/class2/buildingConsonants.html"></a>
+                    <img src="https://cdn.splashmath.com/curriculum_uploads/images/playables/jabber_bots_1.png" alt="Phonics Fun" class="card-image">
+                    <div class="card-title">Building consonants</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="card">
+                    <a href="/games/class2/theDogAndReflection.html"></a>
+                    <img src="https://assets.sooperbooks.com/story-pics/ac2501a1-3a58-4fa4-91bd-0e60a96dc1c4the-dog-and-his-reflection-bedtime-story-animated-cover.375x500.webp" alt="Word Wizards" class="card-image">
+                    <div class="card-title">The dog and reflection</div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="card">
+                    <a href="/games/class2/rhymingWords.html"></a>
+                    <img src="https://imgs.search.brave.com/oxSdqeVmo3T5NAFcO1zKvZvkVge2XyhfqTjpwLnPEPQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS50dXJ0bGVkaWFy/eS5jb20vZ2FtZXMv/c3Bhbi9raW5kZXJn/YXJ0ZW4tcGFydG5l/cnMtaW4tcmh5bWUu/cG5n" alt="Reading Quests" class="card-image">
+                    <div class="card-title">Rhyming words</div>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="card">
+                    <a href="/games/class2/compoundWords.html"></a>
+                    <img src="https://media.turtlediary.com/games/span/compound-words-big.webp" alt="Vocabulary Voyage" class="card-image">
+                    <div class="card-title">Compound words</div>
+                </div>
+                
+                <!-- Card 6 -->
+                <div class="card">
+                    <a href="/games/class2/longVowel.html"></a>
+                    <img src="https://cdn.splashmath.com/curriculum_uploads/images/playables/bucbucs_deep_dive_29.png" alt="Comprehension Champions" class="card-image">
+                    <div class="card-title">Long vowel</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="activities-section">
+        <div class="activities-elements">
+            <span class="element" style="left: 10%; animation-delay: 0s; animation-duration: 15s;">🎮</span>
+            <span class="element" style="left: 25%; animation-delay: 2s; animation-duration: 12s;">🎨</span>
+            <span class="element" style="left: 40%; animation-delay: 4s; animation-duration: 18s;">🏃</span>
+            <span class="element" style="left: 55%; animation-delay: 6s; animation-duration: 14s;">🧩</span>
+            <span class="element" style="left: 70%; animation-delay: 8s; animation-duration: 16s;">🎯</span>
+            <span class="element" style="left: 85%; animation-delay: 10s; animation-duration: 13s;">🎭</span>
+        </div>
+        
+        <div class="container">
+            <div class="heading">
+                <h1>Activities Adventure Zone</h1>
+                <p>Explore exciting activities and develop new skills!</p>
+            </div>
+            
+            <div class="cards-container">
+                <!-- Card 1 -->
+                <div class="card">
+                    <a href="/games/class2/puzzle-Dinos.html"></a>
+                    <img src="https://i.natgeofe.com/k/4865a356-a7f7-4b14-be7f-31697cd8506f/wbt-cheetah-dino-puzzle-promo_3x2.jpg?wp=1&w=630&h=420" alt="Arts & Crafts" class="card-image">
+                    <div class="card-title">Puzzle dino</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card">
+                    <a href="/games/class2/SpaceExplorer.html"></a>
+                    <img src="https://i.natgeofe.com/k/f50e42da-daa5-47b3-a51f-a77493f1fb6b/space-explorer-promo_3x2.jpg?wp=1&w=630&h=420" alt="Puzzle Palace" class="card-image">
+                    <div class="card-title">Space explorer</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="card">
+                    <a href="/games/class2/maze-Ocean.html"></a>
+                    <img src="https://i.natgeofe.com/k/3e209ce5-2544-4076-a62f-2a6100e70b37/ocean-maze-game-og_3x2.jpg?wp=1&w=630&h=420" alt="Science Lab" class="card-image">
+                    <div class="card-title">Maze ocean</div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <div class="edura">
+        <img src="/img/edura3.png" alt="">
+    </div>
+    
+
+    
+
+    <div class="footer">
+        <div class="bubbles">
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Add tilt effect to cards
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => {
+                        card.addEventListener('mousemove', (e) => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+                            
+                            const rotateX = (y - centerY) / 10;
+                            const rotateY = (centerX - x) / 10;
+                            
+                            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                        });
+                        
+                        card.addEventListener('mouseleave', () => {
+                            card.style.transform = '';
+                        });
+                    });
+                    
+                    // Create dynamic math symbols
+                    const mathSymbols = document.querySelector('.math-symbols');
+                    const symbols = ['+', '−', '×', '÷', '=', '%', '√', 'π', '∑', '∞'];
+                    
+                    for (let i = 0; i < 15; i++) {
+                        const symbol = document.createElement('span');
+                        symbol.className = 'symbol';
+                        symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                        
+                        const left = Math.random() * 100;
+                        const animationDelay = Math.random() * 10;
+                        const animationDuration = 10 + Math.random() * 10;
+                        
+                        symbol.style.left = `${left}%`;
+                        symbol.style.animationDelay = `${animationDelay}s`;
+                        symbol.style.animationDuration = `${animationDuration}s`;
+                        
+                        mathSymbols.appendChild(symbol);
+                    }
+                });
+                document.addEventListener("DOMContentLoaded", function() {
+                    const bubblesContainer = document.querySelector(".bubbles");
+                    for (let i = 0; i < 300; i++) {
+                        let bubble = document.createElement("div");
+                        bubble.className = "bubble";
+                        bubble.style = `--size:${14 + Math.random() * 4}rem; 
+                                        --distance:${3 + Math.random() * 4}rem; 
+                                        --position:${-5 + Math.random() * 110}%; 
+                                        --time:${2 + Math.random() * 2}s; 
+                                        --delay:${-1 * (2 + Math.random() * 2)}s;`;
+                        bubblesContainer.appendChild(bubble);
+                    }
+                });
+            </script>
+        </div>
+
+        <div class="content">
+            <p>&copy; 2025 Edura. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="reading.js"></script>
+    <script src="activities.js"></script>
+    
+    <!-- <script src="gamebackground.js">
+    </script> -->
+   <script>document.addEventListener('DOMContentLoaded', function() {
+    const greetingElement = document.getElementById('time-greeting');
+    const currentHour = new Date().getHours();
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("loginUsername");
+
+    if (token && username) {
+        fetch(`http://iiit1127.us-east-2.elasticbeanstalk.com/childProfile/${username}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            const childName = formatChildName(username);
+            updateGreeting(childName);
+
+            if (data.coins !== undefined) {
+                document.getElementById('userCoins').textContent = data.coins;
+                localStorage.setItem('userCoins', data.coins);
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            updateGreeting(formatChildName(username));
+        });
+    } else {
+        updateGreeting("Learner");
+    }
+
+    function updateGreeting(name) {
+        let greetingText = "Hello";
+        if (currentHour < 12) {
+            greetingText = `Good Morning, ${name}!`;
+        } else if (currentHour < 18) {
+            greetingText = `Good Afternoon, ${name}!`;
+        } else {
+            greetingText = `Good Evening, ${name}!`;
+        }
+        greetingElement.textContent = greetingText;
+    }
+
+    function formatChildName(username) {
+        const namePart = username.split(/[\d._-]/)[0]; 
+        return namePart.charAt(0).toUpperCase() + namePart.slice(1).toLowerCase();
+    }
+
+    AOS.init({ duration: 1000, once: true });
+
+    const gameCards = document.querySelectorAll('.card');
+
+    gameCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const gameTitle = card.querySelector('.card-title').textContent;
+            const gameLink = card.querySelector('a').getAttribute('href');
+
+            if (!username || !token) {
+                alert("Please log in to play games");
+                return;
+            }
+
+            let coinsEarned = 50; // Default
+            let learningTopic = "General Learning";  // Default topic
+
+            // Define coins and learning topics per game
+            if (gameTitle === "Addition Doubles") {
+                coinsEarned = 30;
+                learningTopic = "Addition by same number";
+            }
+            if (gameTitle === "Numberman's Pizza") {
+                coinsEarned = 30;
+                learningTopic = "Substraction under 100";
+            }
+            if (gameTitle === "Multiply Magic") {
+                coinsEarned = 30;
+                learningTopic = "Multiply by same number";
+            }
+            if (gameTitle === "DinoSour") {
+                coinsEarned = 30;
+                learningTopic = "Addition of 3 digit number with 10";
+            }
+            if (gameTitle === "Dino Eggs") {
+                coinsEarned = 30;
+                learningTopic = "Subtracting 10 or 100 from 3 digit number";
+            }
+            if (gameTitle === "Animal sound") {
+                coinsEarned = 30;
+                learningTopic = "different animal sounds";
+            }
+            if (gameTitle === "Building consonants") {
+                coinsEarned = 30;
+                learningTopic = "consonants and there understanding";
+            }
+            if (gameTitle === "The dog and reflection") {
+                coinsEarned = 30;
+                learningTopic = "Story understanding";
+            }
+            if (gameTitle === "Rhyming words") {
+                coinsEarned = 30;
+                learningTopic = "Rhyming words understanding";
+            }
+            if (gameTitle === "Compound words") {
+                coinsEarned = 30;
+                learningTopic = "Compound words understanding";
+            }
+            if (gameTitle === "Long vowel") {
+                coinsEarned = 30;
+                learningTopic = "Vowels and their understanding of sounds";
+            }
+            if (gameTitle === "Puzzle dino") {
+                coinsEarned = 30;
+                learningTopic = "Activity of puzzle solving";
+            }
+            if (gameTitle === "Space explorer") {
+                coinsEarned = 30;
+                learningTopic = "spacing exploring and planets";
+            }
+            if (gameTitle === "Maze ocean") {
+                coinsEarned = 30;
+                learningTopic = "understanding oceans";
+            }
+            
+
+            const payload = {
+                game: gameTitle,
+                learning: learningTopic,
+                coins: coinsEarned
+            };
+
+
+            fetch(`http://iiit1127.us-east-2.elasticbeanstalk.com/childProfile/${username}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                return response.text();
+            })
+            .then(() => {
+                animateCoins(coinsEarned, e);
+                setTimeout(() => {
+                    window.location.href = gameLink;
+                }, 3000); // **Now waits 3 seconds before redirecting**
+            })
+            .catch(error => {
+                console.error("Profile update error:", error);
+                alert("Error updating profile. Please try again.");
+            });
+        });
+    });
+
+    function animateCoins(coinsEarned, clickEvent) {
+        const userCoinsElement = document.getElementById('userCoins');
+        const coinCounterPosition = userCoinsElement.getBoundingClientRect();
+        const currentCoins = parseInt(userCoinsElement.textContent || 0);
+        const newCoins = currentCoins + coinsEarned;
+        const numCoins = Math.min(10, Math.max(3, Math.floor(coinsEarned / 10)));
+
+        for (let i = 0; i < numCoins; i++) {
+            setTimeout(() => {
+                const coin = document.createElement('div');
+                coin.className = 'animated-coin';
+                const startX = clickEvent.clientX;
+                const startY = clickEvent.clientY;
+
+                coin.style.cssText = `
+                    position: fixed;
+                    left: ${startX}px;
+                    top: ${startY}px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: gold;
+                    border-radius: 50%;
+                    z-index: 9999;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    color: #222;
+                    font-size: 14px;
+                    opacity: 0;
+                `;
+                coin.innerHTML = '💰';
+                document.body.appendChild(coin);
+
+                requestAnimationFrame(() => {
+                    coin.style.transition = `left 1s ease-out, top 1s ease-out, opacity 1s ease-out`;
+                    coin.style.left = `${coinCounterPosition.left + coinCounterPosition.width / 2}px`;
+                    coin.style.top = `${coinCounterPosition.top + coinCounterPosition.height / 2}px`;
+                    coin.style.opacity = "1";
+                });
+
+                setTimeout(() => {
+                    document.body.removeChild(coin);
+
+                    if (i === numCoins - 1) {
+                        const counterNotification = document.createElement('div');
+                        counterNotification.textContent = `+${coinsEarned}`;
+                        counterNotification.style.cssText = `
+                            position: fixed;
+                            left: ${coinCounterPosition.left + coinCounterPosition.width}px;
+                            top: ${coinCounterPosition.top}px;
+                            color: gold;
+                            font-weight: bold;
+                            font-size: 18px;
+                            opacity: 0;
+                        `;
+                        document.body.appendChild(counterNotification);
+
+                        requestAnimationFrame(() => {
+                            counterNotification.style.transition = 'opacity 0.3s ease-out, transform 0.5s ease-out';
+                            counterNotification.style.opacity = '1';
+
+                            setTimeout(() => {
+                                counterNotification.style.opacity = '0';
+                                counterNotification.style.transform = 'translateY(-20px)';
+                                animateCounter(userCoinsElement, currentCoins, newCoins);
+                                setTimeout(() => {
+                                    document.body.removeChild(counterNotification);
+                                }, 500);
+                            }, 1000);
+                        });
+                    }
+                }, 1000);
+            }, i * 100);
+        }
+
+        localStorage.setItem('userCoins', newCoins);
+    }
+
+    function animateCounter(element, startValue, endValue) {
+        const duration = 1000;
+        const startTime = performance.now();
+
+        function updateCount(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
+
+            element.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount);
+            } else {
+                element.textContent = endValue;
+                element.style.transition = 'transform 0.2s ease-out';
+                element.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        requestAnimationFrame(updateCount);
+    }
+
+    const storedCoins = localStorage.getItem('userCoins');
+    if (storedCoins) {
+        document.getElementById('userCoins').textContent = storedCoins;
+    }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const baseUrl = "http://iiit1127.us-east-2.elasticbeanstalk.com";
+    const username = localStorage.getItem("loginUsername");
+
+    if (!username) {
+        console.error("Username not found in localStorage");
+        return;
+    }
+
+    function fetchAndUpdateStreak() {
+        fetch(`${baseUrl}/streak/${username}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched Streak from API:", data);
+                
+                // Update the streak display
+                const streakElement = document.querySelector(".learning-streak");
+                if (streakElement) {
+                    streakElement.innerHTML = `
+                        <img src="/img/flame.png" alt="Streak" class="learning-streak-icon">
+                        ${data}  <!-- Updated streak value -->
+                    `;
+                }
+            })
+            .catch(err => {
+                console.error("Error fetching streak:", err);
+            });
+    }
+
+    // Fetch streak on page load
+    fetchAndUpdateStreak();
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const baseUrl = "http://iiit1127.us-east-2.elasticbeanstalk.com";
+    const username = localStorage.getItem("loginUsername");
+
+    if (!username) {
+        console.error("Username not found in localStorage");
+        return;
+    }
+
+    function updateStreak() {
+        console.log("User tried to update the streak"); // ✅ Console message
+
+        fetch(`${baseUrl}/streak/${username}`, { method: "POST" })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Updated Streak from API:", data);
+                document.getElementById("output").innerText = "Updated Streak: " + data;
+            })
+            .catch(err => {
+                console.error("Error updating streak:", err);
+                document.getElementById("output").innerText = "Error: " + err.message;
+            });
+    }
+
+    // Attach function to Dashboard button
+    const dashboardButton = document.querySelector(".btn-link");
+    if (dashboardButton) {
+        dashboardButton.addEventListener("click", updateStreak);
+    }
+});
+
+
+</script>
+</body>
+</html>

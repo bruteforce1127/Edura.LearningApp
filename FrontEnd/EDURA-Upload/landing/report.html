@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Child's Learning Journey</title>
+  <style>
+    :root {
+      --primary: #4e73df;
+      --secondary: #6c757d;
+      --success: #28a745;
+      --info: #17a2b8;
+      --warning: #f6c23e;
+      --danger: #e74a3b;
+      --light: #f8f9fc;
+      --dark: #5a5c69;
+      --addition: #4e73df;
+      --subtraction: #36b9cc;
+      --multiplication: #1cc88a;
+      --division: #f6c23e;
+      --reasoning: #e74a3b;
+      --science: #6f42c1;
+      --generalknowledge: green;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f7f9fc;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .header-content h1 {
+      font-size: 24px;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+
+    .header-content p {
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .performance-summary,
+    .graph-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+    }
+
+    .performance-summary h2,
+    .graph-container h2 {
+      color: var(--dark);
+      font-size: 18px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .stat-card {
+      padding: 15px;
+      border-radius: 8px;
+      background-color: var(--light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      color: var(--secondary);
+      margin-bottom: 5px;
+    }
+
+    .stat-card p {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .recent-quizzes {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .recent-quizzes h2 {
+      color: var(--dark);
+      font-size: 18px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    th {
+      background-color: var(--light);
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f8f9fc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .badge-addition {
+      background-color: var(--addition);
+    }
+
+    .badge-subtraction {
+      background-color: var(--subtraction);
+    }
+
+    .badge-multiplication {
+      background-color: var(--multiplication);
+    }
+
+    .badge-division {
+      background-color: var(--division);
+    }
+
+    .badge-reasoning {
+      background-color: var(--reasoning);
+    }
+
+    .badge-science {
+      background-color: var(--science);
+    }
+
+    .badge-generalknowledge {
+      background-color: var(--danger);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: #eaeaea;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    #chart-container {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .bar {
+      transition: height 0.5s ease-out, y 0.5s ease-out;
+    }
+
+    .recommendation-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .recommendation-icon {
+      width: 50px;
+      height: 50px;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .recommendation-content h3 {
+      font-size: 16px;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+
+    .recommendation-content p {
+      font-size: 14px;
+      color: var(--secondary);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+    .delay-4 {
+      animation-delay: 0.4s;
+    }
+    .delay-5 {
+      animation-delay: 0.5s;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-content h1 {
+        font-size: 20px;
+      }
+      .header-content p {
+        font-size: 12px;
+      }
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .performance-summary,
+      .graph-container {
+        padding: 15px;
+      }
+      table, th, td {
+        font-size: 12px;
+      }
+      /* Make tables scrollable on small devices */
+      .recent-quizzes table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header fade-in">
+      <div class="header-content">
+        <h1>My Child's Learning Journey</h1>
+        <p>Track performance and progress across different subjects</p>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar" id="userInitial"></div>
+        <div>
+          <h3 id="childName">Loading...</h3>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard">
+      <div class="performance-summary fade-in delay-1">
+        <h2>Performance Summary</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Average Score</h3>
+            <p id="avgScore">--</p>
+          </div>
+          <div class="stat-card">
+            <h3>Quizzes Completed</h3>
+            <p id="quizCount">--</p>
+          </div>
+          <div class="stat-card">
+            <h3>Strongest Subject</h3>
+            <p id="strongSubject">--</p>
+          </div>
+          <div class="stat-card">
+            <h3>Needs Improvement</h3>
+            <p id="weakSubject">--</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-container fade-in delay-2">
+        <h2>Category Performance</h2>
+        <div id="chart-container">
+          <svg id="performance-chart" viewBox="0 0 800 300">
+            <!-- Chart will be drawn here -->
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-quizzes fade-in delay-3">
+      <h2>Recent Quiz Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
+        <tbody id="quizTable">
+          <tr>
+            <td colspan="4" style="text-align: center;">Loading recent quiz data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="fade-in delay-4">
+      <h2 style="color: var(--dark); margin-bottom: 20px;">Personalized Recommendations</h2>
+      <div id="recommendations">
+        <!-- Recommendations will be added here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get username from localStorage
+    const username = localStorage.getItem("loginUsername") || "Guest";
+
+    // Categories we're tracking
+    const categories = [
+      "Addition",
+      "Subtraction",
+      "Multiplication",
+      "Division",
+      "Reasoning",
+      "Science",
+      "General Knowledge"
+    ];
+
+    // Sample data - will be replaced with real data from API
+    let quizData = {};
+
+    // Initialize empty data for each category
+    categories.forEach(category => {
+      quizData[category] = [];
+    });
+
+    // Update UI with username
+    document.addEventListener('DOMContentLoaded', function() {
+      // Display child's name (assuming it's the username)
+      document.getElementById('childName').textContent = username;
+
+      // Set user avatar initial
+      const initial = username.charAt(0).toUpperCase();
+      document.getElementById('userInitial').textContent = initial;
+
+      // Fetch data for each category
+      fetchAllCategoryData();
+    });
+
+    function fetchAllCategoryData() {
+      const promises = categories.map(category =>
+        fetchCategoryData(username, category)
+      );
+
+      Promise.all(promises)
+        .then(() => {
+          updatePerformanceSummary();
+          renderBarChart();
+          renderRecentQuizzes();
+          generateRecommendations();
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+    }
+
+    function fetchCategoryData(username, category) {
+      // In a real app, this would be your actual API endpoint
+      const url = `http://iiit1127.us-east-2.elasticbeanstalk.com/leaderboard/user/${encodeURIComponent(username)}/${encodeURIComponent(category)}`;
+
+      return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Store the data in our quizData object
+          quizData[category] = data.slice(0, 5); // Get latest 5 quizzes
+        })
+        .catch(error => {
+          console.error(`Error fetching ${category} data:`, error);
+          // For demo purposes, generate random data if API fails
+          quizData[category] = generateMockData(category, 5);
+        });
+    }
+
+    function generateMockData(category, count) {
+      const mockData = [];
+      const now = new Date();
+
+      for (let i = 0; i < count; i++) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i * 3); // Each quiz is 3 days apart
+
+        mockData.push({
+          score: Math.floor(Math.random() * 40) + 60, // Score between 60-100
+          timeDate: date.toISOString()
+        });
+      }
+
+      return mockData;
+    }
+
+    function updatePerformanceSummary() {
+      // Calculate average score across all quizzes
+      let totalScore = 0;
+      let quizCount = 0;
+      let categoryScores = {};
+
+      // Initialize category scores
+      categories.forEach(category => {
+        categoryScores[category] = {
+          total: 0,
+          count: 0,
+          average: 0
+        };
+      });
+
+      // Calculate totals and counts
+      Object.keys(quizData).forEach(category => {
+        quizData[category].forEach(quiz => {
+          totalScore += quiz.score;
+          quizCount++;
+
+          categoryScores[category].total += quiz.score;
+          categoryScores[category].count++;
+        });
+      });
+
+      // Calculate averages
+      Object.keys(categoryScores).forEach(category => {
+        if (categoryScores[category].count > 0) {
+          categoryScores[category].average =
+            (categoryScores[category].total / categoryScores[category].count);
+        }
+      });
+
+      // Find strongest and weakest subjects
+      let strongestCategory = "";
+      let weakestCategory = "";
+      let highestAvg = 0;
+      let lowestAvg = 100;
+
+      Object.keys(categoryScores).forEach(category => {
+        if (categoryScores[category].count > 0) {
+          if (categoryScores[category].average > highestAvg) {
+            highestAvg = categoryScores[category].average;
+            strongestCategory = category;
+          }
+
+          if (categoryScores[category].average < lowestAvg) {
+            lowestAvg = categoryScores[category].average;
+            weakestCategory = category;
+          }
+        }
+      });
+
+      // Update the UI
+      document.getElementById('avgScore').textContent =
+        quizCount > 0 ? Math.round(totalScore / quizCount) + '' : 'No data';
+      document.getElementById('quizCount').textContent = quizCount;
+      document.getElementById('strongSubject').textContent =
+        strongestCategory || 'Not enough data';
+      document.getElementById('weakSubject').textContent =
+        weakestCategory || 'Not enough data';
+    }
+
+    function renderBarChart() {
+      const svg = document.getElementById('performance-chart');
+      const width = 800;
+      const height = 300;
+      const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+
+      // Clear existing content
+      svg.innerHTML = '';
+
+      // Create chart group
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute('transform', `translate(${margin.left},${margin.top})`);
+      svg.appendChild(g);
+
+      // Add X axis labels
+      const categoriesWithData = categories.filter(category =>
+        quizData[category] && quizData[category].length > 0
+      );
+
+      const xScale = chartWidth / categoriesWithData.length;
+      const barWidth = xScale * 0.6;
+
+      // Draw X axis line
+      const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      xAxis.setAttribute('x1', 0);
+      xAxis.setAttribute('y1', chartHeight);
+      xAxis.setAttribute('x2', chartWidth);
+      xAxis.setAttribute('y2', chartHeight);
+      xAxis.setAttribute('stroke', '#ccc');
+      xAxis.setAttribute('stroke-width', '1');
+      g.appendChild(xAxis);
+
+      // Draw Y axis line
+      const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      yAxis.setAttribute('x1', 0);
+      yAxis.setAttribute('y1', 0);
+      yAxis.setAttribute('x2', 0);
+      yAxis.setAttribute('y2', chartHeight);
+      yAxis.setAttribute('stroke', '#ccc');
+      yAxis.setAttribute('stroke-width', '1');
+      g.appendChild(yAxis);
+
+      // Draw Y axis labels and grid lines
+      for (let i = 0; i <= 10; i++) {
+        const y = chartHeight - (i * chartHeight / 10);
+
+        const tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        tick.setAttribute('x1', -5);
+        tick.setAttribute('y1', y);
+        tick.setAttribute('x2', 0);
+        tick.setAttribute('y2', y);
+        tick.setAttribute('stroke', '#ccc');
+        tick.setAttribute('stroke-width', '1');
+        g.appendChild(tick);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute('x', -10);
+        label.setAttribute('y', y + 5);
+        label.setAttribute('text-anchor', 'end');
+        label.setAttribute('font-size', '12');
+        label.setAttribute('fill', '#666');
+        label.textContent = `${i}`;
+        g.appendChild(label);
+
+        if (i > 0) {
+          const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          gridLine.setAttribute('x1', 0);
+          gridLine.setAttribute('y1', y);
+          gridLine.setAttribute('x2', chartWidth);
+          gridLine.setAttribute('y2', y);
+          gridLine.setAttribute('stroke', '#eee');
+          gridLine.setAttribute('stroke-width', '1');
+          g.appendChild(gridLine);
+        }
+      }
+
+      // Draw bars for each category
+      categoriesWithData.forEach((category, i) => {
+        const categoryData = quizData[category];
+        if (!categoryData || categoryData.length === 0) return;
+
+        // Calculate average score for this category
+        const avgScore = categoryData.reduce((sum, quiz) => sum + quiz.score, 0) / categoryData.length;
+
+        // Determine bar color based on category
+        let barColor;
+        switch (category) {
+          case 'Addition': barColor = 'var(--addition)'; break;
+          case 'Subtraction': barColor = 'var(--subtraction)'; break;
+          case 'Multiplication': barColor = 'var(--multiplication)'; break;
+          case 'Division': barColor = 'var(--division)'; break;
+          case 'Reasoning': barColor = 'var(--reasoning)'; break;
+          case 'Science': barColor = 'var(--science)'; break;
+          case 'General Knowledge': barColor = 'var(--generalknowledge)'; break;
+          default: barColor = '#ccc';
+        }
+
+        // Calculate bar height
+        const barHeight = (avgScore / 10) * chartHeight;
+
+        // Create bar
+        const bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bar.setAttribute('x', i * xScale + (xScale - barWidth) / 2);
+        bar.setAttribute('y', chartHeight - barHeight);
+        bar.setAttribute('width', barWidth);
+        bar.setAttribute('height', barHeight);
+        bar.setAttribute('fill', barColor);
+        bar.setAttribute('class', 'bar');
+
+        // Add animation delay
+        bar.style.animation = 'fadeIn 0.5s ease-out forwards';
+        bar.style.animationDelay = `${i * 0.1}s`;
+
+        // Add tooltip on hover
+        bar.addEventListener('mouseover', function () {
+          const tooltip = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          tooltip.setAttribute('x', i * xScale + xScale / 2);
+          tooltip.setAttribute('y', chartHeight - barHeight - 10);
+          tooltip.setAttribute('text-anchor', 'middle');
+          tooltip.setAttribute('font-size', '12');
+          tooltip.setAttribute('fill', '#333');
+          tooltip.setAttribute('id', 'tooltip');
+          tooltip.textContent = `${Math.round(avgScore)}`;
+          g.appendChild(tooltip);
+        });
+
+        bar.addEventListener('mouseout', function () {
+          const tooltip = document.getElementById('tooltip');
+          if (tooltip) tooltip.remove();
+        });
+
+        g.appendChild(bar);
+
+        // Add category label
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute('x', i * xScale + xScale / 2);
+        label.setAttribute('y', chartHeight + 20);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-size', '12');
+        label.setAttribute('fill', '#666');
+
+        // Handle long category names
+        const displayName = category === 'General Knowledge' ? 'General' : category;
+        label.textContent = displayName;
+        g.appendChild(label);
+      });
+
+      // Add chart title
+      const title = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      title.setAttribute('x', chartWidth / 2);
+      title.setAttribute('y', -10);
+      title.setAttribute('text-anchor', 'middle');
+      title.setAttribute('font-size', '14');
+      title.setAttribute('font-weight', 'bold');
+      title.setAttribute('fill', '#333');
+      title.textContent = 'Average Quiz Scores by Category';
+      g.appendChild(title);
+    }
+
+    function renderRecentQuizzes() {
+      const tableBody = document.getElementById('quizTable');
+      tableBody.innerHTML = '';
+
+      // Get all quizzes across categories and sort by date
+      let allQuizzes = [];
+
+      Object.keys(quizData).forEach(category => {
+        quizData[category].forEach(quiz => {
+          allQuizzes.push({
+            category: category,
+            score: quiz.score,
+            timeDate: new Date(quiz.timeDate)
+          });
+        });
+      });
+
+      // Sort by date, newest first
+      allQuizzes.sort((a, b) => b.timeDate - a.timeDate);
+
+      // Take just the 10 most recent
+      allQuizzes = allQuizzes.slice(0, 10);
+
+      if (allQuizzes.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="4" style="text-align: center;">No quiz data available.</td>`;
+        tableBody.appendChild(row);
+        return;
+      }
+
+      // Add rows to table
+      allQuizzes.forEach((quiz, index) => {
+        const row = document.createElement('tr');
+        row.className = `fade-in delay-${index % 5 + 1}`;
+
+        // Format date
+        const dateFormatted = quiz.timeDate.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+
+        // Determine badge class
+        const badgeClass = `badge-${quiz.category.toLowerCase().replace(' ', '')}`;
+
+        // Determine performance text
+        let performanceText = '';
+        if (quiz.score >= 9) performanceText = 'Excellent';
+        else if (quiz.score >= 8) performanceText = 'Great';
+        else if (quiz.score >= 7) performanceText = 'Good';
+        else if (quiz.score >= 6) performanceText = 'Fair';
+        else performanceText = 'Needs Improvement';
+
+        // Set row content
+        row.innerHTML = `
+          <td>${dateFormatted}</td>
+          <td><span class="badge ${badgeClass}">${quiz.category}</span></td>
+          <td>${quiz.score}</td>
+          <td>
+            <div>${performanceText}</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: ${(quiz.score)*10}%; background-color: var(--${quiz.category.toLowerCase().replace(' ', '')});"></div>
+            </div>
+          </td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    function generateRecommendations() {
+      const recommendationsContainer = document.getElementById('recommendations');
+      recommendationsContainer.innerHTML = '';
+
+      // Calculate average scores by category
+      const categoryAverages = {};
+
+      categories.forEach(category => {
+        const quizzes = quizData[category];
+        if (quizzes && quizzes.length > 0) {
+          const avg = quizzes.reduce((sum, quiz) => sum + quiz.score, 0) / quizzes.length;
+          categoryAverages[category] = avg;
+        }
+      });
+
+      // Sort categories by average score (ascending)
+      const sortedCategories = Object.keys(categoryAverages)
+        .filter(category => categoryAverages[category] !== undefined)
+        .sort((a, b) => categoryAverages[a] - categoryAverages[b]);
+
+      // Generate recommendations for the lowest-scoring category
+      const lowCategories = sortedCategories.slice(0, 1);
+
+      lowCategories.forEach((category, index) => {
+        const score = categoryAverages[category];
+
+        let recommendationText = '';
+        let iconType = '';
+
+        switch (category) {
+          case 'Addition':
+            recommendationText = 'Practice with flashcards and number games to improve addition skills.';
+            iconType = 'plus';
+            break;
+          case 'Subtraction':
+            recommendationText = 'Try using counting objects or number lines to visualize subtraction.';
+            iconType = 'minus';
+            break;
+          case 'Multiplication':
+            recommendationText = 'Practice times tables daily and use multiplication games.';
+            iconType = 'times';
+            break;
+          case 'Division':
+            recommendationText = 'Use real-world scenarios to practice division concepts.';
+            iconType = 'divide';
+            break;
+          case 'Reasoning':
+            recommendationText = 'Try puzzle games and logical reasoning activities.';
+            iconType = 'puzzle';
+            break;
+          case 'Science':
+            recommendationText = 'Explore hands-on science experiments and educational videos.';
+            iconType = 'science';
+            break;
+          case 'General Knowledge':
+            recommendationText = 'Read more books and educational material on various topics.';
+            iconType = 'book';
+            break;
+        }
+
+        const card = document.createElement('div');
+        card.className = `recommendation-card fade-in delay-${index + 4}`;
+
+        card.innerHTML = `
+          <div class="recommendation-icon">
+            <svg viewBox="0 0 24 24" width="50" height="50">
+              ${getIconSvg(iconType)}
+            </svg>
+          </div>
+          <div class="recommendation-content">
+            <h3>Improve ${category} Skills (Current: ${Math.round(score)})</h3>
+            <p>${recommendationText}</p>
+          </div>
+        `;
+
+        recommendationsContainer.appendChild(card);
+      });
+
+      // Add a general positive recommendation
+      if (lowCategories.length < 2) {
+        const card = document.createElement('div');
+        card.className = 'recommendation-card fade-in delay-5';
+
+        card.innerHTML = `
+          <div class="recommendation-icon">
+            <svg viewBox="0 0 24 24" width="50" height="50">
+              ${getIconSvg('star')}
+            </svg>
+          </div>
+          <div class="recommendation-content">
+            <h3>Keep Up The Good Work!</h3>
+            <p>Continue practicing regularly to maintain your excellent progress.</p>
+          </div>
+        `;
+
+        recommendationsContainer.appendChild(card);
+      }
+    }
+
+    function getIconSvg(type) {
+      switch (type) {
+        case 'plus':
+          return '<circle cx="12" cy="12" r="10" fill="#4e73df" fill-opacity="0.2"/><path d="M12 6v12M6 12h12" stroke="#4e73df" stroke-width="2" stroke-linecap="round"/>';
+        case 'minus':
+          return '<circle cx="12" cy="12" r="10" fill="#36b9cc" fill-opacity="0.2"/><path d="M6 12h12" stroke="#36b9cc" stroke-width="2" stroke-linecap="round"/>';
+        case 'times':
+          return '<circle cx="12" cy="12" r="10" fill="#1cc88a" fill-opacity="0.2"/><path d="M7 7l10 10M17 7L7 17" stroke="#1cc88a" stroke-width="2" stroke-linecap="round"/>';
+        case 'divide':
+          return '<circle cx="12" cy="12" r="10" fill="#f6c23e" fill-opacity="0.2"/><path d="M6 12h12M12 8v0.01M12 16v0.01" stroke="#f6c23e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="8" r="1" fill="#f6c23e"/><circle cx="12" cy="16" r="1" fill="#f6c23e"/>';
+        case 'puzzle':
+          return '<circle cx="12" cy="12" r="10" fill="#e74a3b" fill-opacity="0.2"/><path d="M12 6v3a3 3 0 0 0 3 3h3v3a3 3 0 0 1-3 3h-3v-3a3 3 0 0 0-3-3H6v-3a3 3 0 0 1 3-3h3z" stroke="#e74a3b" stroke-width="1.5" fill="none"/>';
+        case 'science':
+          return '<circle cx="12" cy="12" r="10" fill="#6f42c1" fill-opacity="0.2"/><path d="M9 5v5.5a4 4 0 0 1-1 2.5l-1 1.5h10l-1-1.5a4 4 0 0 1-1-2.5V5" stroke="#6f42c1" stroke-width="1.5" fill="none"/><rect x="11" y="3" width="2" height="2" rx="1" fill="#6f42c1"/><path d="M8 14h8" stroke="#6f42c1" stroke-width="1.5"/>';
+        case 'book':
+          return '<circle cx="12" cy="12" r="10" fill="#fd7e14" fill-opacity="0.2"/><path d="M12 6a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6V6h-6z" stroke="#fd7e14" stroke-width="1.5" fill="none"/><path d="M12 6a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4" stroke="#fd7e14" stroke-width="1.5" fill="none"/><path d="M9 8h6M9 12h6" stroke="#fd7e14" stroke-width="1.5"/>';
+        case 'star':
+          return '<circle cx="12" cy="12" r="10" fill="#4e73df" fill-opacity="0.2"/><path d="M12 5l1.5 3 3.5.5-2.5 2.2.6 3.3-3.1-1.5-3.1 1.5.6-3.3-2.5-2.2 3.5-.5z" fill="#4e73df" stroke="#4e73df" stroke-width="1"/>';
+        default:
+          return '<circle cx="12" cy="12" r="10" fill="#4e73df" fill-opacity="0.2"/>';
+      }
+    }
+  </script>
+</body>
+</html>

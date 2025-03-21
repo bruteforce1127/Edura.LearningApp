@@ -1,0 +1,178 @@
+.reading-section {
+    margin-top: 20px;
+    background-color: #fff6e5;
+    background-image: linear-gradient(135deg, #ffe6c0 25%, transparent 25%),
+        linear-gradient(225deg, #ffe6c0 25%, transparent 25%),
+        linear-gradient(45deg, #ffe6c0 25%, transparent 25%),
+        linear-gradient(315deg, #ffe6c0 25%, #fff6e5 25%);
+    background-position: 40px 0, 40px 0, 0 0, 0 0;
+    background-size: 80px 80px;
+    min-height: 70vh;
+    padding: 20px 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 20px;
+  }
+  
+  .heading {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 30px;
+  }
+  
+  .heading h1 {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, #FF9A8B, #FF6A88, #FF99AC, #DA77F2, #9775FA, #748FFC, #4DABF7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+    animation: rainbow 6s ease infinite;
+    background-size: 400% 400%;
+  }
+  
+  .heading p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+  }
+  
+  @keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+  }
+  
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    justify-items: center;
+  }
+  
+  /* Card styles */
+  .card {
+    position: relative;
+    width: 280px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+  }
+  
+  .card-title {
+    background-color: #ffffff;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card:nth-child(1) {
+    background-color: #FFD7BA;
+  }
+  
+  .card:nth-child(2) {
+    background-color: #FFBCD9;
+  }
+  
+  .card:nth-child(3) {
+    background-color: #D5BDFF;
+  }
+  
+  .card:nth-child(4) {
+    background-color: #BDE0FF;
+  }
+  
+  .card:nth-child(5) {
+    background-color: #C2F0C2;
+  }
+  
+  .card:nth-child(6) {
+    background-color: #FFFFB5;
+  }
+  
+  .card a {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  /* Floating book and letter elements */
+  .reading-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .element {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 2rem;
+    font-weight: bold;
+    animation: float 10s linear infinite;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-20vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .heading h1 {
+        font-size: 2.5rem;
+    }
+    
+    .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }

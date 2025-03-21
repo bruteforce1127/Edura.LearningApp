@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edura Learning - Kids Video Player</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #f9f3ff;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: #ff6b98;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .video-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .main-player {
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .main-player:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 15px;
+      background: linear-gradient(90deg, #ff6b98, #ffb347, #90ee90, #87cefa);
+      border-radius: 30px 30px 0 0;
+    }
+    
+    .player-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 8px solid #ffd1dc;
+    }
+    
+    .player-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+    }
+    
+    .video-title {
+      font-size: 1.8rem;
+      color: #8657b5;
+      margin: 20px 0 10px;
+      text-align: center;
+    }
+    
+    .video-description {
+      color: #666;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .video-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .video-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+      border: 5px solid #e2f0ff;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      border-color: #ffd1dc;
+    }
+    
+    .video-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    
+    .video-card-info {
+      padding: 15px;
+    }
+    
+    .video-card-title {
+      font-size: 1.2rem;
+      color: #5f4b8b;
+      margin: 0 0 10px;
+    }
+    
+    .video-card-duration {
+      color: #ff6b98;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    
+    .video-card-duration::before {
+      content: "▶";
+      margin-right: 5px;
+    }
+    
+    /* Cute decorative elements */
+    .decoration {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+    }
+    
+    .star {
+      top: 20px;
+      right: 20px;
+      color: #ffce00;
+      font-size: 2rem;
+    }
+    
+    .cloud {
+      bottom: -15px;
+      left: 30px;
+      background: white;
+      border-radius: 50px;
+      width: 100px;
+      height: 40px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    
+    .cloud:before {
+      content: "";
+      position: absolute;
+      background: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      top: -25px;
+      left: 15px;
+    }
+    
+    .cloud:after {
+      content: "";
+      position: absolute;
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      top: -20px;
+      left: 50px;
+    }
+    
+    /* Loading animation */
+    .loading {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+    
+    .loading div {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ff6b98;
+      margin: 0 5px;
+      animation: bounce 0.6s infinite alternate;
+    }
+    
+    .loading div:nth-child(2) {
+      animation-delay: 0.2s;
+      background: #ffb347;
+    }
+    
+    .loading div:nth-child(3) {
+      animation-delay: 0.4s;
+      background: #90ee90;
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+    
+    /* No video message */
+    .no-video {
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #8657b5;
+      font-size: 1.5rem;
+    }
+    
+    .no-video img {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    
+    /* Hide all iframes initially */
+    .player-frame iframe {
+      display: none;
+    }
+    
+    /* Active video card */
+    .video-card.active {
+      border-color: #ff6b98;
+      transform: scale(1.05);
+    }
+    .story-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+    
+    .story-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      border: 5px solid #e2f0ff;
+    }
+    
+    .story-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      border-color: #ffd1dc;
+    }
+    
+    .story-thumbnail {
+      position: relative;
+      text-align: center;
+      padding: 20px 20px 0;
+      background: #f5f8ff;
+    }
+    
+    .story-thumbnail img {
+      width: 200px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      border: 3px solid white;
+    }
+    
+    .story-age {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: #ff6b98;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .story-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    
+    .story-title {
+      font-size: 1.3rem;
+      color: #5f4b8b;
+      margin: 0 0 10px;
+    }
+    
+    .story-description {
+      color: #666;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    
+    .download-btn {
+      background: #8657b5;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    
+    .download-btn:hover {
+      background: #ff6b98;
+      transform: scale(1.05);
+    }
+    
+    .download-icon {
+      margin-right: 8px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Edura Learning Videos</h1>
+      <p>Click on any video card below to start learning!</p>
+    </div>
+    
+    <div class="video-container">
+      <div class="main-player">
+        <div class="star decoration">★</div>
+        <div class="cloud decoration"></div>
+        
+        <div class="player-frame">
+          <div class="no-video">
+            <img src="https://i.ytimg.com/vi_webp/VCWSI84aGbg/maxresdefault.webp" alt="Cute character" />
+            <p>Select a video to start learning!</p>
+          </div>
+          <div class="loading">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          
+          <!-- Direct iframe embeds -->
+          <iframe id="video-aqz-KE-bpKQ" src="https://www.youtube.com/embed/VCWSI84aGbg?si=lWik_FHqD-OHjvJT" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          <iframe id="video-xUUq0HuSLS0" src="https://www.youtube.com/embed/BVT5zZvSRks?si=LQP56dSkthmd-I7E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          <iframe id="video-_mVLuF-CQ8A" src="https://www.youtube.com/embed/jp6IENCaHGw?si=qU8Hb1PmuBTBMpiC" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          <iframe id="video-Rmx1Cu5X00s" src="https://www.youtube.com/embed/EjxoZvVTeJY?si=713QIB4sWIMsBaJL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          <iframe id="video-6RfMEfWJlrk" src="https://www.youtube.com/embed/BWdXN0wwi6A?si=aN1z3eIBtnDeRs85" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          <iframe id="video-Dr8yeuvPAyw" src="https://www.youtube.com/embed/G-7AMnZLOCM?si=2SCELaGxQmNj7x_2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <h2 class="video-title">Welcome to Edura Learning</h2>
+        <p class="video-description">Choose a fun educational video from below!</p>
+      </div>
+      
+      <div class="video-cards">
+        <!-- Video Card 1 -->
+        <div class="video-card" data-video-id="aqz-KE-bpKQ" data-title="Find the odd one out" data-description="Find the odd one out">
+          <img src="https://i.ytimg.com/vi_webp/VCWSI84aGbg/maxresdefault.webp" alt="Big Numbers Song" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Find the odd one out</h3>
+            <div class="video-card-duration">8:26</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 2 -->
+        <div class="video-card" data-video-id="xUUq0HuSLS0" data-title="Good Manners" data-description="Learning Good Manners">
+          <img src="https://i.ytimg.com/vi/BVT5zZvSRks/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLBPDgmVpY5KjKw5MUDjTQxLaf3zgg" alt="The Solar System Song"/>
+          <div class="video-card-info">
+            <h3 class="video-card-title">Learning Good manners
+            </h3>
+            <div class="video-card-duration">7:10</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 3 -->
+        <div class="video-card" data-video-id="_mVLuF-CQ8A" data-title="Good and Bad Habits" data-description="Learn the good and bad habits">
+          <img src="https://i.ytimg.com/vi/jp6IENCaHGw/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLCO7fH14ZKJrDsgd1kS3KTKXBLjcA" alt="The Alphabet Zoo" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Good and Bad Habits</h3>
+            <div class="video-card-duration">15:56</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 4 -->
+        <div class="video-card" data-video-id="Rmx1Cu5X00s" data-title="Multiplication" data-description="Learning multiplication in fun way!">
+          <img src="https://i.ytimg.com/vi/EjxoZvVTeJY/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLDVLQ8psszLSi6h2wmLtc41D2zu6w" alt="Days of the Week Song" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Multiplication</h3>
+            <div class="video-card-duration">4:25</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 5 -->
+        <div class="video-card" data-video-id="6RfMEfWJlrk" data-title="Opposite Words for kids" data-description="Learning Opposite words">
+          <img src="https://i.ytimg.com/vi/BWdXN0wwi6A/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDCnh1YoW3IpfUM-5MPA9gxOCDCDw" alt="Addition Song" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Opposite Words for kids</h3>
+            <div class="video-card-duration">13:57</div>
+          </div>
+        </div>
+        
+        <!-- Video Card 6 -->
+        <div class="video-card" data-video-id="Dr8yeuvPAyw" data-title="Body Parts for kids" data-description="Understanding body parts">
+          <img src="https://i.ytimg.com/vi/G-7AMnZLOCM/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLBcb88tOzOqWzX1z6oXhZkj_7tzLA" alt="Colors Song" />
+          <div class="video-card-info">
+            <h3 class="video-card-title">Body Parts for kids</h3>
+            <div class="video-card-duration">7:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="header">
+      <h1>Story Exercises</h1>
+      <p>Download fun stories and complete the exercises!</p>
+    </div>
+    
+    <div class="story-cards">
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="https://media-hosting.imagekit.io//47cfbb97e29949b6/teen-male-tourist-hiking-mountains_107791-25407.avif?Expires=1836731020&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=v3GEHH75Tb7MV7FKFKKCmTOGeW3bbeBnt1EXtAs5rAniDCs0EBCfLhRQQK~7XtZh1RvVe~ryGf9paf3meD7mrpgbKZFSVc97m2rxKS1T2kkikZIn8DpTPW03oZQVG7TuXq7GHk~Mz-E211Wuy1lx71dZ4B~LZT8M7QAyWxSR-GDlyQqdgxASUPwEi2E~puhXSyPXo9pK3WHtVauQLhqq7~S9qgtrf2nMUdDm0afm05VzrV9Xe5NszzpsZF7R0KA1u3BrdMuNnmE-zJCEVQN31Dv4B2KQ0yJTRLyLIzHdFUDDVfEtNLqwyj2YejW6HSFANbFg4sqoV82m6XElFj~V1w__" alt="The Lost Puppy Story" />
+          <div class="story-age">Ages 5-7</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">Adarsh Adventure</h3>
+          
+          <button class="download-btn" onclick="downloadStory('Adarsh_Adventure.pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+      
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="https://media-hosting.imagekit.io//598e1b4d7f8e4602/illustration-arab-boy-riding-camel-600nw-344643419.webp?Expires=1836731078&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=NIxEtgnt6o7fpt2xQ2a5nbKbLg0j9yaUyd7W4iEHpuXcnViq2~CV8Iy3j8GWQKHEphvcNSGvfGKQClhIYvI681XO6~-U8ofbxT199Dtt~v59JQrRtrfXfQANiJPkvoAl78NzW~JwROyb8YfivOYCTj9UdptSRuqJM3frIksIB594QJVEnKBqA~QusLrt1ouEH-0PGcVIZ1QjT2ow2Cl3tRe3~MyhHHmA5f7cjF9YvpntB1W-Y4KwDVM-4mBsCifYbiwGKH0IBbiLH61CkGjP6uwE8m1L-fW0MJGtxJjhF4Ytt8EJ1h3I2g9aliyRmJtHMEo8Qlc2HoafecFvsMMg4w__" alt="Space Adventure Story" />
+          <div class="story-age">Ages 6-8</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">Adarsh Desert Story</h3>
+          
+          <button class="download-btn" onclick="downloadStory('Adarsh_Desert_Story[1].pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+      
+      <div class="story-card">
+        <div class="story-thumbnail">
+          <img src="https://media-hosting.imagekit.io//83e79838e0914bda/childrens-pirate-adventure-sea_1308-172930.avif?Expires=1836731173&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=dQY40eNV11hKvCm7Ra6nCUwZ2aMjPcmDMnFvf~3jCIOzX-LwqAohMzRwLz~8G538uenxNOhZtN1OG5SsXzatLxW-HqQLc2Vli0CTk6A3DiH0ghYeCEIqQQsC-RQZMAyHypKESI2s38fFHb51haarE2AFmcyvgwPIrNs44Yb92pxrFAEKMNyYaqEUicw3NytDB0HEA4W4MjyVMIS-C-LUhW0zm9Ogd-fTWBuxg0i2p7VRfp2B60bGsGGSBFzLHEo-OgsWI4BHMp2RcgB9xTgPphiURZKQgQo4tT4DlCefKgYQAo7jq9SuBpc1DOgvYL71U9JduPbcjbdd-fWuEEiJ2Q__" />
+          <div class="story-age">Ages 4-6</div>
+        </div>
+        <div class="story-info">
+          <h3 class="story-title">Adarsh Pirate Adventure</h3>
+          
+          <button class="download-btn" onclick="downloadStory('Adarsh_pirate_Adventure[1].pdf')">
+            <span class="download-icon">↓</span> Download PDF
+          </button>
+        </div>
+      </div>
+      
+      
+      
+      
+      
+      
+    </div>
+  </div>
+
+  <script>
+    // Variables
+    var noVideoMessage = document.querySelector('.no-video');
+    var loadingAnimation = document.querySelector('.loading');
+    var allIframes = document.querySelectorAll('.player-frame iframe');
+    
+    // Function to play a video
+    function playVideo(videoId, title, description) {
+      // Show loading animation
+      loadingAnimation.style.display = 'block';
+      noVideoMessage.style.display = 'none';
+      
+      // Update video title and description
+      document.querySelector('.video-title').textContent = title;
+      document.querySelector('.video-description').textContent = description;
+      
+      // Hide all iframes
+      allIframes.forEach(iframe => {
+        iframe.style.display = 'none';
+      });
+      
+      // Show the selected iframe
+      var selectedIframe = document.getElementById('video-' + videoId);
+      if (selectedIframe) {
+        selectedIframe.style.display = 'block';
+        
+        // Reload the iframe to ensure it starts playing
+        var currentSrc = selectedIframe.src;
+        selectedIframe.src = currentSrc.includes('?') ? 
+                            currentSrc.split('?')[0] + '?rel=0&autoplay=1' : 
+                            currentSrc + '?rel=0&autoplay=1';
+      }
+      
+      // Hide loading animation after a short delay
+      setTimeout(function() {
+        loadingAnimation.style.display = 'none';
+      }, 1000);
+      
+      // Update active video card styling
+      document.querySelectorAll('.video-card').forEach(card => {
+        if (card.dataset.videoId === videoId) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+    
+    // Add click event listeners to video cards
+    document.querySelectorAll('.video-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const videoId = this.dataset.videoId;
+          const title = this.dataset.title;
+          const description = this.dataset.description;
+          playVideo(videoId, title, description);
+        });
+      });
+      
+      // Add some cute animations
+      function addBubbles() {
+        const bubble = document.createElement('div');
+        bubble.style.position = 'fixed';
+        bubble.style.width = Math.random() * 30 + 20 + 'px';
+        bubble.style.height = bubble.style.width;
+        bubble.style.borderRadius = '50%';
+        bubble.style.background = 'rgba(255, 255, 255, 0.4)';
+        bubble.style.border = '2px solid rgba(255, 255, 255, 0.8)';
+        bubble.style.bottom = '-100px';
+        bubble.style.left = Math.random() * window.innerWidth + 'px';
+        bubble.style.zIndex = '-1';
+        bubble.style.animationDuration = Math.random() * 5 + 5 + 's';
+        bubble.style.animationName = 'float';
+        bubble.style.animationTimingFunction = 'linear';
+        bubble.style.animationIterationCount = '1';
+        document.body.appendChild(bubble);
+        
+        setTimeout(() => {
+          document.body.removeChild(bubble);
+        }, 10000);
+      }
+      
+      // Create bubble animation
+      const bubbleStyle = document.createElement('style');
+      bubbleStyle.innerHTML = `
+        @keyframes float {
+          0% { transform: translateY(0); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 0.8; }
+          100% { transform: translateY(-100vh); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(bubbleStyle);
+      
+      // Add bubbles occasionally
+      setInterval(addBubbles, 3000);
+      function downloadStory(filename) {
+        // Direct link to the PDF file in your pdf folder
+        window.location.href = 'pdf/' + filename;
+      }
+    </script>
+  </body>
+  </html>

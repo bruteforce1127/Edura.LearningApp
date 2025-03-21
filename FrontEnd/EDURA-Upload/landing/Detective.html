@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kid Detective Image Scanner</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+    
+    .detective-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 8px solid #4682b4;
+      border-radius: 15px;
+      box-shadow: 5px 5px 0px #000;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #d02090;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 0px #000;
+    }
+    
+    .tagline {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #4682b4;
+    }
+    
+    .camera-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      border: 5px dashed #ffa500;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #fffaf0;
+      position: relative;
+    }
+    
+    #video {
+      width: 100%;
+      display: block;
+      border-radius: 5px;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      background-color: #ff6347;
+      color: white;
+      border: 3px solid #000;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0px #000;
+    }
+    
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 1px 1px 0px #000;
+    }
+    
+    #captureBtn {
+      background-color: #ff6347;
+    }
+    
+    #processBtn {
+      background-color: #32cd32;
+    }
+    
+    .result-container {
+      margin-top: 30px;
+      padding: 15px;
+      border: 5px solid #ffd700;
+      border-radius: 12px;
+      background-color: #fff;
+    }
+    
+    .result-title {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #4682b4;
+    }
+    
+    #result {
+      padding: 15px;
+      background-color: #f0f8ff;
+      border: 2px solid #87ceeb;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      min-height: 100px;
+      white-space: pre-wrap;
+    }
+    
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    #canvas {
+      display: none;
+    }
+    
+    .detective-icon {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-color: #ffd700;
+      border-radius: 50%;
+      border: 3px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      top: -30px;
+      left: -20px;
+      transform: rotate(-15deg);
+    }
+    
+    .detective-icon:after {
+      content: "🔍";
+    }
+    
+    .clue-box {
+      border-left: 8px solid #ff6347;
+      padding-left: 15px;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #4682b4;
+      margin-bottom: 30px;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    
+    .tab-button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 1rem;
+      background-color: #87ceeb;
+      border: 2px solid #000;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+    }
+    
+    .tab-button.active {
+      background-color: #4682b4;
+      color: white;
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .upload-area {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      border: 5px dashed #9370db;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f8f8ff;
+      text-align: center;
+      position: relative;
+    }
+    
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: #9370db;
+    }
+    
+    #fileInput {
+      display: none;
+    }
+    
+    .upload-label {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      background-color: #9370db;
+      color: white;
+      border: 3px solid #000;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+      transition: all 0.2s;
+    }
+    
+    .upload-label:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0px #000;
+    }
+    
+    #uploadPreview {
+      max-width: 100%;
+      max-height: 300px;
+      margin-top: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+    
+    #analysisMethod {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fffaf0;
+      border-radius: 8px;
+      border: 2px dashed #ffa500;
+    }
+  </style>
+</head>
+<body>
+  <div class="detective-container">
+    <h1>Super Kid Detective Scanner</h1>
+    <p class="tagline">Uncover the mysteries in every picture!</p>
+    
+    <div id="analysisMethod" class="clue-box">
+      Choose your detective method: Take a photo with the camera or upload a secret image file!
+    </div>
+    
+    <div class="tab-buttons">
+      <div class="tab-button active" data-tab="camera">Camera 📸</div>
+      <div class="tab-button" data-tab="upload">Upload 📁</div>
+    </div>
+    
+    <div id="cameraTab" class="tab-content active">
+      <div class="clue-box">
+        First step: Allow camera access when prompted, then take a snapshot of the clue!
+      </div>
+      
+      <div class="camera-container">
+        <div class="detective-icon"></div>
+        <video id="video" autoplay></video>
+        <canvas id="canvas"></canvas>
+      </div>
+      
+      <div class="buttons">
+        <button id="captureBtn">Take Snapshot! 📸</button>
+      </div>
+    </div>
+    
+    <div id="uploadTab" class="tab-content">
+      <div class="clue-box">
+        Select a mystery image from your secret files for analysis!
+      </div>
+      
+      <div class="upload-area">
+        <div class="detective-icon"></div>
+        <div class="upload-icon">📁</div>
+        <input type="file" id="fileInput" accept="image/*">
+        <label for="fileInput" class="upload-label">Choose Image File 📄</label>
+        <p>Or drag and drop your clue here!</p>
+        <img id="uploadPreview" src="#" alt="Preview">
+      </div>
+    </div>
+    
+    <div class="buttons">
+      <button id="processBtn" disabled>Analyze Clues! 🔍</button>
+    </div>
+    
+    <div class="result-container">
+      <div class="result-title">Detective's Report</div>
+      <div id="result">Your detective report will appear here after analyzing the image...</div>
+    </div>
+    
+    <div class="footer">
+      <p>Kid Detective Scanner - Finding clues in the ordinary since 2025!</p>
+    </div>
+  </div>
+  
+  <script>
+    // Base URL where your API is hosted
+    const baseUrl = "http://iiit1127.us-east-2.elasticbeanstalk.com";
+    
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('captureBtn');
+    const processBtn = document.getElementById('processBtn');
+    const result = document.getElementById('result');
+    const fileInput = document.getElementById('fileInput');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const uploadArea = document.querySelector('.upload-area');
+    
+    let imageBlob = null;
+    let activeMethod = 'camera';
+    
+    // Tab switching functionality
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabName = button.getAttribute('data-tab');
+        
+        // Update active tab button
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update active tab content
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabName + 'Tab').classList.add('active');
+        
+        activeMethod = tabName;
+        
+        // Update guidance text
+        if (tabName === 'camera') {
+          document.getElementById('analysisMethod').innerText = 'Choose your detective method: Take a photo with the camera or upload a secret image file!';
+        } else {
+          document.getElementById('analysisMethod').innerText = 'Choose your detective method: Take a photo with the camera or upload a secret image file!';
+        }
+        
+        // Reset the process button and result
+        processBtn.disabled = true;
+        result.innerText = "Your detective report will appear here after analyzing the image...";
+        imageBlob = null;
+      });
+    });
+    
+    // Access the camera
+    async function setupCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: "environment" } 
+        });
+        video.srcObject = stream;
+        result.innerText = "Camera ready! Take a snapshot of your mystery object.";
+      } catch (error) {
+        result.innerText = "Camera error: " + error.message + "\nPlease make sure your browser has permission to use the camera or try the upload option!";
+      }
+    }
+    
+    // Call setup when the page loads
+    window.addEventListener('load', setupCamera);
+    
+    // File Input Change Handler
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        
+        // Check if the selected file is an image
+        if (!file.type.match('image.*')) {
+          result.innerText = "Detective can only examine image files! Please select a proper clue.";
+          return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+          uploadPreview.src = e.target.result;
+          uploadPreview.style.display = 'block';
+          
+          // Create a blob from the file
+          imageBlob = file;
+          processBtn.disabled = false;
+          result.innerText = "Great choice, detective! Now click 'Analyze Clues' to investigate this image!";
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Drag and Drop Functionality
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      uploadArea.style.borderColor = '#32cd32';
+      uploadArea.style.backgroundColor = '#f0fff0';
+    }
+    
+    function unhighlight() {
+      uploadArea.style.borderColor = '#9370db';
+      uploadArea.style.backgroundColor = '#f8f8ff';
+    }
+    
+    uploadArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      
+      if (!file.type.match('image.*')) {
+        result.innerText = "Detective can only examine image files! Please select a proper clue.";
+        return;
+      }
+      
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        uploadPreview.src = e.target.result;
+        uploadPreview.style.display = 'block';
+        
+        // Create a blob from the file
+        imageBlob = file;
+        processBtn.disabled = false;
+        result.innerText = "Great drop, detective! Now click 'Analyze Clues' to investigate this image!";
+      };
+      
+      reader.readAsDataURL(file);
+    }
+    
+    // Capture image from camera
+    captureBtn.addEventListener('click', () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Convert canvas to blob
+      canvas.toBlob((blob) => {
+        imageBlob = blob;
+        processBtn.disabled = false;
+        result.innerText = "Great snapshot, detective! Now click 'Analyze Clues' to investigate this image!";
+      }, 'image/jpeg', 0.95);
+    });
+    
+    // Process the captured image
+    processBtn.addEventListener('click', () => {
+      if (!imageBlob) {
+        result.innerText = "No image captured yet! Take a snapshot first.";
+        return;
+      }
+      
+      result.innerText = "🕵️ Detective is analyzing the clues... Please wait!";
+      
+      const formData = new FormData();
+      formData.append("file", imageBlob);
+      
+      fetch(baseUrl + "/gemini/process-image", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+      })
+      .then(data => {
+        let extractedText = "";
+        try {
+          if (
+            data.data &&
+            data.data.candidates &&
+            data.data.candidates.length > 0 &&
+            data.data.candidates[0].content &&
+            data.data.candidates[0].content.parts &&
+            data.data.candidates[0].content.parts.length > 0
+          ) {
+            // Structure the response in a kid-friendly way
+            const originalText = data.data.candidates[0].content.parts[0].text;
+            extractedText = "🔍 DETECTIVE'S FINDINGS:\n\n" + 
+                           "📝 DESCRIPTION:\n" + originalText + "\n\n" +
+                           "🧩 MYSTERY SOLVED! 🎉";
+          } else {
+            extractedText = "📜 DETECTIVE'S NOTE: Hmm, no clues found in this image. Try another one!";
+          }
+        } catch (error) {
+          extractedText = "😮 OH NO! The detective's magnifying glass broke! Try again.";
+        }
+        result.innerText = extractedText;
+      })
+      .catch(error => {
+        result.innerText = "🚨 DETECTIVE'S ALERT! There was a problem: " + error.message;
+      });
+    });
+  </script>
+</body>
+</html>

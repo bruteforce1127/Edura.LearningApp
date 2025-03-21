@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Three Digit Addition Game</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+      overflow: hidden;
+    }
+    
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(#1E90FF 0%, #87CEFA 40%, #E0F7FA 70%); /* Richer sky gradient */
+      overflow: hidden;
+    }
+    
+    /* Sun */
+    .sun {
+      position: absolute;
+      top: 50px;
+      right: 100px;
+      width: 80px;
+      height: 80px;
+      background: #FFD700;
+      border-radius: 50%;
+      box-shadow: 0 0 30px #FFA500;
+    }
+    
+    /* Clouds */
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.9;
+      filter: blur(3px);
+    }
+    
+    .cloud.c1 {
+      width: 100px;
+      height: 60px;
+      top: 80px;
+      left: 20%;
+      animation: float 30s linear infinite;
+    }
+    
+    .cloud.c2 {
+      width: 150px;
+      height: 70px;
+      top: 100px;
+      left: 60%;
+      animation: float 40s linear infinite;
+    }
+    
+    .cloud.c3 {
+      width: 120px;
+      height: 50px;
+      top: 150px;
+      left: 30%;
+      animation: float 35s linear infinite 5s;
+    }
+    
+    /* Birds */
+    .bird {
+      position: absolute;
+      width: 15px;
+      height: 10px;
+      background: transparent;
+    }
+    
+    .bird::before, .bird::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 3px;
+      background: #333;
+      top: 0;
+      border-radius: 50% 50% 0 0;
+    }
+    
+    .bird::before {
+      left: 0;
+      transform: rotate(-30deg);
+    }
+    
+    .bird::after {
+      right: 0;
+      transform: rotate(30deg);
+    }
+    
+    /* Position birds */
+    .bird.b1 {
+      top: 100px;
+      left: 25%;
+      animation: fly 20s linear infinite;
+    }
+    
+    .bird.b2 {
+      top: 150px;
+      left: 40%;
+      animation: fly 25s linear infinite 2s;
+    }
+    
+    .bird.b3 {
+      top: 80px;
+      left: 65%;
+      animation: fly 23s linear infinite 5s;
+    }
+    
+    .bird.b4 {
+      top: 120px;
+      left: 55%;
+      animation: fly 22s linear infinite 8s;
+    }
+    
+    .bird.b5 {
+      top: 180px;
+      left: 30%;
+      animation: fly 27s linear infinite 12s;
+    }
+    
+    /* Hills for the background */
+    .hills {
+      position: absolute;
+      bottom: 195px;
+      width: 100%;
+      height: 100px;
+    }
+    
+    .hill {
+      position: absolute;
+      height: 100px;
+      width: 600px;
+      border-radius: 50%;
+      background: #8BC34A;
+    }
+    
+    .hill.h1 {
+      bottom: -40px;
+      left: -100px;
+    }
+    
+    .hill.h2 {
+      bottom: -20px;
+      left: 400px;
+      width: 500px;
+      background: #7CB342;
+    }
+    
+    .hill.h3 {
+      bottom: -30px;
+      right: -100px;
+      width: 450px;
+      background: #689F38;
+    }
+    
+    /* Barn illustration (enhanced) */
+    .barn {
+      position: absolute;
+      bottom: 200px;
+      left: 10%;
+      width: 220px;
+      height: 200px;
+      background: #B22222; /* Firebrick color for barn */
+      border: 5px solid #8B0000; /* Dark red border */
+      border-bottom: none;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .barn::before {
+      content: "";
+      position: absolute;
+      top: -80px;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-left: 120px solid transparent;
+      border-right: 120px solid transparent;
+      border-bottom: 80px solid #8B0000; /* Darker roof color */
+    }
+    
+    /* Barn door */
+    .barn-door {
+      position: absolute;
+      bottom: 0;
+      left: 75px;
+      width: 70px;
+      height: 100px;
+      background: #8B4513;
+      border: 3px solid #5D2906;
+    }
+    
+    /* Barn window */
+    .barn-window {
+      position: absolute;
+      top: 40px;
+      left: 60px;
+      width: 40px;
+      height: 40px;
+      background: #FFF8DC;
+      border: 3px solid #8B0000;
+    }
+    
+    .barn-window::before, .barn-window::after {
+      content: "";
+      position: absolute;
+      background: #8B0000;
+    }
+    
+    .barn-window::before {
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      transform: translateX(-50%);
+    }
+    
+    .barn-window::after {
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 3px;
+      transform: translateY(-50%);
+    }
+    
+    /* Enhanced ground/grass with texture */
+    .grass {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: #7CFC00; /* LawnGreen base */
+      background-image: 
+        linear-gradient(90deg, rgba(124, 252, 0, 0.8) 50%, rgba(107, 218, 0, 0.8) 50%),
+        linear-gradient(rgba(124, 252, 0, 0.8) 50%, rgba(107, 218, 0, 0.8) 50%);
+      background-size: 30px 30px;
+      overflow: hidden;
+    }
+    
+    /* Grass blades */
+    .grass::after {
+      content: "";
+      position: absolute;
+      top: -15px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background-image: 
+        radial-gradient(circle at 10px 15px, transparent 12px, #7CFC00 13px),
+        radial-gradient(circle at 25px 15px, transparent 12px, #8BC34A 13px),
+        radial-gradient(circle at 40px 15px, transparent 12px, #7CFC00 13px),
+        radial-gradient(circle at 55px 15px, transparent 12px, #8BC34A 13px);
+      background-size: 70px 20px;
+      background-repeat: repeat-x;
+    }
+    
+    /* Flowers in the grass */
+    .flower {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .flower::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 4px;
+      width: 2px;
+      height: 15px;
+      background: #558B2F;
+    }
+    
+    .flower.f1 {
+      bottom: 180px;
+      left: 20%;
+      background: #FFD700;
+    }
+    
+    .flower.f2 {
+      bottom: 170px;
+      left: 30%;
+      background: #FF69B4;
+    }
+    
+    .flower.f3 {
+      bottom: 175px;
+      left: 50%;
+      background: #FF4500;
+    }
+    
+    .flower.f4 {
+      bottom: 165px;
+      left: 70%;
+      background: #FFD700;
+    }
+    
+    .flower.f5 {
+      bottom: 180px;
+      left: 85%;
+      background: #FF69B4;
+    }
+    
+    /* Fence */
+    .fence {
+      position: absolute;
+      bottom: 200px;
+      right: 50px;
+      width: 300px;
+      height: 60px;
+    }
+    
+    .fence-post {
+      position: absolute;
+      width: 10px;
+      height: 60px;
+      background: #A0522D;
+    }
+    
+    .fence-rail {
+      position: absolute;
+      width: 100%;
+      height: 8px;
+      background: #CD853F;
+    }
+    
+    /* Fence posts positioning */
+    .fence-post.p1 { left: 0; }
+    .fence-post.p2 { left: 60px; }
+    .fence-post.p3 { left: 120px; }
+    .fence-post.p4 { left: 180px; }
+    .fence-post.p5 { left: 240px; }
+    .fence-post.p6 { left: 300px; }
+    
+    /* Fence rails positioning */
+    .fence-rail.r1 { top: 10px; }
+    .fence-rail.r2 { top: 30px; }
+    .fence-rail.r3 { top: 50px; }
+    
+    /* Chicken position */
+    .chicken {
+      position: absolute;
+      bottom: 50px;
+      right: 20%;
+      width: 60px;
+      height: 70px;
+    }
+    
+    /* Simple chicken illustration since image might not be available */
+    .chicken-body {
+      position: absolute;
+      bottom: 0;
+      width: 45px;
+      height: 35px;
+      background: #F5F5DC;
+      border-radius: 50% 60% 60% 50%;
+    }
+    
+    .chicken-head {
+      position: absolute;
+      top: -25px;
+      left: 30px;
+      width: 25px;
+      height: 25px;
+      background: #F5F5DC;
+      border-radius: 50%;
+    }
+    
+    .chicken-beak {
+      position: absolute;
+      top: -15px;
+      left: 50px;
+      width: 12px;
+      height: 8px;
+      background: #FFA500;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+    
+    .chicken-comb {
+      position: absolute;
+      top: -35px;
+      left: 35px;
+      width: 12px;
+      height: 12px;
+      background: #FF4500;
+      clip-path: polygon(0 100%, 33% 50%, 66% 100%, 100% 50%);
+    }
+    
+    .chicken-leg {
+      position: absolute;
+      bottom: 0;
+      width: 3px;
+      height: 15px;
+      background: #FFA500;
+    }
+    
+    .chicken-leg.l1 {
+      left: 15px;
+    }
+    
+    .chicken-leg.l2 {
+      left: 30px;
+    }
+    
+    /* ADDED: Game Styles from Space Theme */
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 1000px;
+      z-index: 10;
+    }
+    
+    .intro-screen {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    
+    .intro-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.5rem;
+      color: #008000;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .intro-text {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    
+    .math-example {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+    }
+    
+    .rocket-example {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .rocket-icon {
+      font-size: 2.5rem;
+      color: #8B0000;
+      margin-bottom: 10px;
+    }
+    
+    .equation {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .start-button {
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      font-family: 'Baloo 2', cursive;
+    }
+    
+    .start-button:hover {
+      background-color: #660000;
+      transform: scale(1.05);
+    }
+    
+    .game-wrapper {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 600px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .fullscreen-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .fullscreen-icon {
+      font-size: 1.2rem;
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(100vw); }
+    }
+    
+    @keyframes fly {
+      0% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(25vw) translateY(-20px); }
+      50% { transform: translateX(50vw) translateY(0); }
+      75% { transform: translateX(75vw) translateY(-15px); }
+      100% { transform: translateX(100vw) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <!-- Sky elements -->
+    <div class="sun"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    
+    <!-- Birds -->
+    <div class="bird b1"></div>
+    <div class="bird b2"></div>
+    <div class="bird b3"></div>
+    <div class="bird b4"></div>
+    <div class="bird b5"></div>
+    
+    <!-- Background hills -->
+    <div class="hills">
+      <div class="hill h1"></div>
+      <div class="hill h2"></div>
+      <div class="hill h3"></div>
+    </div>
+    
+    <!-- Barn with details -->
+    <div class="barn">
+      <div class="barn-door"></div>
+      <div class="barn-window"></div>
+    </div>
+    
+    <!-- Fence -->
+    <div class="fence">
+      <div class="fence-post p1"></div>
+      <div class="fence-post p2"></div>
+      <div class="fence-post p3"></div>
+      <div class="fence-post p4"></div>
+      <div class="fence-post p5"></div>
+      <div class="fence-post p6"></div>
+      <div class="fence-rail r1"></div>
+      <div class="fence-rail r2"></div>
+      <div class="fence-rail r3"></div>
+    </div>
+    
+    <!-- Ground -->
+    <div class="grass"></div>
+    
+    <!-- Flowers -->
+    <div class="flower f1"></div>
+    <div class="flower f2"></div>
+    <div class="flower f3"></div>
+    <div class="flower f4"></div>
+    <div class="flower f5"></div>
+    
+    <!-- Chicken (as a fallback if image is unavailable) -->
+    <div class="chicken">
+      <div class="chicken-body"></div>
+      <div class="chicken-head"></div>
+      <div class="chicken-beak"></div>
+      <div class="chicken-comb"></div>
+      <div class="chicken-leg l1"></div>
+      <div class="chicken-leg l2"></div>
+    </div>
+    
+    <!-- ADDED: Game Container from Space Theme -->
+    <div class="container">
+      <!-- Intro Screen -->
+      <div class="intro-screen" id="introScreen">
+          <h1 class="intro-title">Three-Digit Addition by Adding 10 !</h1>
+          
+          <div class="intro-content">
+              <p class="intro-text">Welcome young explorer! Today we're going to learn a special math secret:</p>
+              <p class="intro-text">When adding 10 to a three-digit number, the hundreds place stays the same, <br>and only the tens place increases by 1.</p>
+              
+              <div class="math-example">
+                  <div class="rocket-example">
+                    <i class="fas fa-plus fa-3x icon"></i>
+                    <div class="equation">What is 367 + 10?</div>
+                  </div>
+                  
+                  <div class="rocket-example">
+                    <i class="fas fa-plus fa-3x icon"></i>
+                    <div class="equation">What is 482 + 10?</div>
+                  </div>
+                  
+                  <div class="rocket-example">
+                    <i class="fas fa-plus fa-3x icon"></i>
+                    <div class="equation">What is 799 + 10?</div>
+                  </div>
+              </div>
+              
+              <p class="intro-text">In this adventure, you'll use Addition power to speed through the fields !</p>
+              <p class="intro-text">Just remember: When adding 10, the ones place <br>remains the same, and only the tens place increases by 1 .</p>
+          </div>
+          
+          <button class="start-button" id="startButton">
+              START ADDITION !
+          </button>
+      </div>
+      
+      <!-- Game Screen -->
+      <div class="game-wrapper" id="gameWrapper">
+          <iframe src="https://www.mindlygames.com/games/dinosoar/index.html?questionnaireKey=-N8JATnO_Yy6KW8AGrmR"
+                  title="Three Digit Addition Game"
+                  allowfullscreen
+                  id="gameFrame">
+          </iframe>
+          <div class="fullscreen-btn" id="fullscreenBtn">
+              <div class="fullscreen-icon">
+                  <i class="fas fa-expand"></i>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startButton = document.getElementById('startButton');
+        const introScreen = document.getElementById('introScreen');
+        const gameWrapper = document.getElementById('gameWrapper');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const gameFrame = document.getElementById('gameFrame');
+        
+        // Start button event listener
+        startButton.addEventListener('click', function() {
+            introScreen.style.display = 'none';
+            gameWrapper.style.display = 'block';
+        });
+        
+        // Fullscreen button event listener
+        fullscreenBtn.addEventListener('click', function() {
+            if (gameFrame.requestFullscreen) {
+                gameFrame.requestFullscreen();
+            } else if (gameFrame.mozRequestFullScreen) { /* Firefox */
+                gameFrame.mozRequestFullScreen();
+            } else if (gameFrame.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                gameFrame.webkitRequestFullscreen();
+            } else if (gameFrame.msRequestFullscreen) { /* IE/Edge */
+                gameFrame.msRequestFullscreen();
+            }
+        });
+        
+        // Check if there's pending game data to send
+        const pendingGameData = localStorage.getItem('pendingGameData');
+        const gameSendTime = localStorage.getItem('gameSendTime');
+        
+        if (pendingGameData && gameSendTime) {
+            const gameData = JSON.parse(pendingGameData);
+            const sendTime = new Date(gameSendTime);
+            const now = new Date();
+            
+            // Calculate time remaining until we should send data
+            const timeRemaining = Math.max(0, sendTime.getTime() - now.getTime());
+            
+            console.log(`Game data will be sent in ${timeRemaining}ms for ${gameData.username}`);
+            
+            // Set timeout to send data after the remaining time
+            setTimeout(() => {
+                // Update the game data with actual completion
+                gameData.completed = true;
+                gameData.actualPlayDuration = Math.floor((new Date() - new Date(gameData.timeStarted)) / 1000);
+                
+                // Send data to server
+                sendGameData(gameData);
+                
+                // Clear the pending data
+                localStorage.removeItem('pendingGameData');
+                localStorage.removeItem('gameSendTime');
+                
+                // Show notification that coins were earned
+                showEarnedCoinsNotification(gameData.coinsEarned, gameData.username);
+            }, timeRemaining);
+        }
+        
+        // Function to send data to the API
+        function sendGameData(gameData) {
+            fetch('https://api.edura.example/game-activity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(gameData),
+                keepalive: true // This allows the request to complete even if page is changed
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Game data sent successfully for user:', gameData.username);
+                    // Update user coins in localStorage for persistence across pages
+                    updateUserCoins(gameData.coinsEarned);
+                    return response.json();
+                } else {
+                    console.error('Failed to send game data');
+                    throw new Error('Server responded with error');
+                }
+            })
+            .then(data => {
+                console.log('Server response:', data);
+                // You could update UI based on server response if needed
+            })
+            .catch(error => {
+                console.error('Error sending game data:', error);
+                
+                // If there's an error, store the data to try again later
+                const failedRequests = JSON.parse(localStorage.getItem('failedGameRequests') || '[]');
+                failedRequests.push(gameData);
+                localStorage.setItem('failedGameRequests', JSON.stringify(failedRequests));
+            });
+        }
+        
+        // Function to update user coins
+        function updateUserCoins(coinsEarned) {
+            const currentCoins = parseInt(localStorage.getItem('userCoins') || '0');
+            const newCoins = currentCoins + coinsEarned;
+            localStorage.setItem('userCoins', newCoins.toString());
+            
+            // If there's a coins display element on the page, update it
+            const coinsDisplay = document.querySelector('.coins-display');
+            if (coinsDisplay) {
+                coinsDisplay.textContent = newCoins;
+            }
+        }
+        
+        // Function to show notification that coins were earned
+        function showEarnedCoinsNotification(coins, username) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#B22222';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '9999';
+            notification.style.transition = 'all 0.3s ease';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(20px)';
+            notification.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">🌾</div>
+                    <div>
+                        <div style="font-weight:bold;margin-bottom:5px;">Great job, ${username}!</div>
+                        <div>You earned <span style="font-weight:bold;font-size:1.1em;">${coins} coins</span></div>
+                    </div>
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+        
+        // Retry sending failed requests
+        function retryFailedRequests() {
+            const failedRequests = JSON.parse(localStorage.getItem('failedGameRequests') || '[]');
+            if (failedRequests.length > 0) {
+                console.log(`Attempting to resend ${failedRequests.length} failed requests`);
+                
+                const newFailedRequests = [];
+                failedRequests.forEach(request => {
+                    fetch('https://api.edura.example/game-activity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(request),
+                        keepalive: true
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            newFailedRequests.push(request);
+                        }
+                    })
+                    .catch(() => {
+                        newFailedRequests.push(request);
+                    });
+                });
+                
+                // Update the failed requests in localStorage
+                localStorage.setItem('failedGameRequests', JSON.stringify(newFailedRequests));
+            }
+        }
+        
+        // Try to resend failed requests when page loads
+        retryFailedRequests();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campfire Building Consonant Diagraphs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #8a2be2;
+      --bg2: #85e783;
+      --bg3: #00bfff;
+      --button-bg: rgba(255, 255, 255, 0.2);
+      --button-hover: rgba(255, 255, 255, 0.3);
+      --button-active: rgba(255, 255, 255, 0.4);
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
+      background-size: 400% 400%;
+      animation: gradientFlow 18s ease infinite;
+      position: relative;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .intro-screen {
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      padding: 30px;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+    
+    .intro-screen h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, white, #f0f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .intro-screen p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+    
+    .start-button {
+      background: linear-gradient(45deg, var(--bg1), var(--bg3));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+    }
+    
+    .start-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      height: 100vh;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
+    
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .control-button {
+      background: var(--button-bg);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .control-button:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+    }
+    
+    .responsive-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      z-index: 100;
+      border-radius: 0;
+    }
+    
+    @media (max-width: 768px) {
+      .iframe-container, .intro-screen {
+        width: 95%;
+      }
+      
+      .iframe-container {
+        height: 65vh;
+      }
+      
+      .control-button {
+        font-size: 14px;
+        padding: 6px 10px;
+      }
+      
+      .intro-screen h1 {
+        font-size: 2rem;
+      }
+      
+      .intro-screen p {
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .iframe-container {
+        width: 98%;
+        height: 60vh;
+      }
+      
+      .intro-screen {
+        width: 90%;
+        padding: 20px;
+      }
+      
+      .control-button {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+      
+      .intro-screen h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Intro Screen -->
+  <div class="intro-screen" id="intro-screen">
+    <h1>Campfire Building Consonant Diagraphs</h1>
+    
+    <p>Welcome to Campfire Building Consonant Diagraphs. Click Start to play.</p>
+    <button class="start-button" id="start-button">Start</button>
+  </div>
+  
+  <!-- Iframe Container -->
+  <div class="iframe-container" id="iframe-container">
+    <div class="controls-bar">
+      <button class="control-button" id="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back
+      </button>
+      <button class="control-button" id="fullscreen-button">
+        <i class="fas fa-expand"></i>
+        Fullscreen
+      </button>
+    </div>
+    <iframe 
+      src="https://webapps.esparklearning.com/1.RF.3.a_Campfire_Sorting_LL/" 
+      class="responsive-iframe" 
+      id="content-iframe" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Transition from intro screen to iframe container
+      const introScreen = document.getElementById('intro-screen');
+      const iframeContainer = document.getElementById('iframe-container');
+      const startButton = document.getElementById('start-button');
+      
+      startButton.addEventListener('click', function() {
+        introScreen.style.opacity = '0';
+        setTimeout(() => {
+          introScreen.style.display = 'none';
+          iframeContainer.style.display = 'flex';
+          setTimeout(() => {
+            iframeContainer.style.opacity = '1';
+          }, 50);
+        }, 500);
+      });
+      
+      // Fullscreen functionality
+      const container = iframeContainer;
+      const fullscreenButton = document.getElementById('fullscreen-button');
+      const backButton = document.getElementById('back-button');
+      
+      fullscreenButton.addEventListener('click', function() {
+        if (container.classList.contains('fullscreen')) {
+          container.classList.remove('fullscreen');
+          fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+        } else {
+          container.classList.add('fullscreen');
+          fullscreenButton.innerHTML = '<i class="fas fa-compress"></i> Exit Fullscreen';
+        }
+      });
+      
+      // Back button functionality to return to the intro screen
+      backButton.addEventListener('click', function() {
+        iframeContainer.style.display = 'none';
+        introScreen.style.display = 'block';
+      });
+      
+      // Exit fullscreen with the ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && container.classList.contains('fullscreen')) {
+          container.classList.remove('fullscreen');
+          fullscreenButton.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

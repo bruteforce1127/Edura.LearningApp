@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Edura - Team Infinity Loop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-color: #8d00ff;
+            --secondary-color: #FFD93D;
+            --accent-color: #3498db;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: var(--secondary-color);
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .section {
+            background-color: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .hackathon-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .feature {
+            background-color: #FFD93D;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+        .team-section {
+            background-color: var(--primary-color);
+            padding: 2rem;
+            text-align: center;
+            color: #333;
+        }
+        .team-section > h2{
+            color: #FFD93D;
+        }
+
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .team-member {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            
+        }
+        .team-member:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .team-member img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .team-member h3 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .faq-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        .faq-item {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+        .faq-question {
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            display: none;
+            margin-top: 0.5rem;
+        }
+        .faq-toggle {
+            font-size: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .hackathon-info {
+                flex-direction: column;
+            }
+            .team-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+    </style>
+    <style>
+        .survey-container {
+            margin-top: 2rem;
+        }
+        
+        .survey-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .survey-charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .chart-container h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+            margin-bottom: 2rem;
+        }
+        
+        .survey-chart {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .wide-chart {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        /* Key Findings Styles */
+        .key-findings {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .key-findings h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .key-findings ul {
+            list-style-type: none;
+        }
+        
+        .key-findings li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .key-findings li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -0.5rem;
+        }
+        
+        /* Testimonials Styles */
+        .survey-testimonials h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .testimonial {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .testimonial:before {
+            content: "";
+            font-size: 4rem;
+            color: var(--primary-color);
+            opacity: 0.2;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+        }
+        
+        .testimonial-author {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            margin-top: 1rem;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .survey-charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .wide-chart {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>About Edura</h1>
+            <p>Transforming Learning Through Play and Innovation</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Our Origin Story</h2>
+            <div class="hackathon-info">
+                <div>
+                    <h3>Hack to Crack 2.0 Hackathon</h3>
+                    <p>Edura was born out of passion and innovation during the Hack to Crack 2.0 hackathon, where Team Infinity Loop identified a critical challenge in children's education: making learning engaging and effective.</p>
+                    <p>Our mission was to create a solution that transforms learning into an exciting, gamified experience that helps children improve their reading and learning skills.</p>
+                </div>
+                <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHwP3BgN9tzaw/img-crop_100/img-crop_100/0/1736514253077?e=1750291200&v=beta&t=cS0wF2t5JYOhpDA29jccXXHuWYm7fESX-rVqknth1uM" alt="Hackathon Event" />
+            </div>
+        </div>
+       
+
+<div class="section" id="survey-results">
+    <h2>Survey Results</h2>
+    <p>We conducted a survey from the parent having childs of same age group to perform an extensive research to understand the challenges in children's education. Here's what we discovered:</p>
+    
+    <div class="survey-container">
+        <!-- Summary Stats -->
+        <div class="survey-summary">
+            <div class="stat-card">
+                <h3>65.5% said NO!</h3>
+                <p>Does your child enjoy studying with dreary old methods like faded textbooks and mind-numbing lectures?
+                    <br> <br>क्या आपके बच्चे को पारंपरिक शैक्षिक तरीके, जैसे कि अप्रचलित पाठ्यपुस्तकें और लंबे lectures, अध्ययन के लिए engaging लगते हैं</p>
+            </div>
+            <div class="stat-card">
+                <h3>64.9% said NO!</h3>
+                <p>Do you know your child’s strong and weak areas in school subjects?<br><br>
+                    क्या आप अपने बच्चे के स्कूल के विषयों में मजबूत और कमजोर क्षेत्रों के बारे में जानते हैं?</p>
+            </div>
+            <div class="stat-card">
+                <h3>93% said Yes!</h3>
+                <p>Would you like a platform that teaches your child in a fun way, unlike traditional methods? <br><br>
+                    क्या आप एक ऐसे प्लेटफॉर्म को पसंद करेंगे जो आपके बच्चे को पारंपरिक तरीकों के विपरीत मज़ेदार तरीके से सिखाए? </p>
+            </div>
+            <div class="stat-card">
+                <h3>87% said Yes!</h3>
+                <p>Would it help to get personalized details about your child’s learning progress?<br><br>
+                    क्या आपके बच्चे की सीखने की प्रगति के बारे में व्यक्तिगत विवरण प्राप्त करना मददगार होगा?
+                </p>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="survey-charts">
+            <div class="chart-container">
+                <h3>enjoy studying with dreary old methods?</h3>
+                <img src="/img/graph1.png" alt="Learning Challenges Chart" class="survey-chart">
+            </div>
+            
+            <div class="chart-container">
+                <h3>Do you know your child’s strong and weak areas in school subjects?</h3>
+                <img src="/img/graph2.png" alt="Preferred Learning Methods Chart" class="survey-chart">
+            </div>
+        </div>
+        
+        <div class="chart-container full-width">
+            <h3>Would you like a platform that teaches your child in a fun way, unlike traditional methods?</h3>
+            <img src="/img/graph3.png" alt="Parent Satisfaction Chart" class="survey-chart wide-chart">
+        </div>
+        <div class="chart-container full-width">
+            <h3>Would it help to get personalized details about your child’s learning progress?</h3>
+            <img src="/img/graph3.png" alt="Parent Satisfaction Chart" class="survey-chart wide-chart">
+        </div>
+        
+        <!-- Key Findings -->
+        <div class="key-findings">
+            <h3>Key Insights</h3>
+            <ul><h3>1. Limited Awareness of Child’s Performance</h3>
+                <li>A significant majority of parents (around 65%) feel they do not clearly know their child’s strong and weak subject areas.</li>
+                <h3>2. High Demand for More Information</h3>
+                <li>An overwhelming 87% of respondents want tools or support to better understand their child’s academic strengths and weaknesses.</li>
+                <h3>3. Engagement Challenges</h3>
+                <li>Most parents (about 65%) report that their children find classes boring, indicating a need for more engaging or personalized approaches</li>
+                <h3>4. Small Minority Fully Informed and Satisfied</h3>
+                <li>Only about a quarter (25%) say they fully understand their child’s performance, and very few parents (8%) report that their kids are consistently happy and engaged in school.</li>
+            </ul>
+        </div>
+        
+        <!-- Testimonials -->
+        <div class="survey-testimonials">
+            <h3>What Parents Are Saying</h3>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <p>"बच्चों के विकास में कई तरह की चुनौतियाँ होती हैं, जिनमें गरीबी, शिक्षा तक पहुँच की कमी, पोषण की कमी, सामाजिक भेदभाव, और मानसिक स्वास्थ्य संबंधी समस्याएं शामिल हैं."</p>
+                    <span class="testimonial-author">- Parent of 7-year-old</span>
+                </div>
+                <div class="testimonial">
+                    <p>"Finds difficult to study because of less interest"</p>
+                    <span class="testimonial-author">- Parent of 9-year-old</span>
+                </div>
+                <div class="testimonial">
+                    <p>"There is more to memorizing than to understand should be done in counter - clockwise physics"</p>
+                    <span class="testimonial-author">- Parent of 6-year-old</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="section">
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Gamified Learning</h3>
+                    <p>Interactive games designed to make learning fun and engaging for children.</p>
+                </div>
+                <div class="feature">
+                    <h3>Personalized Progress Tracking</h3>
+                    <p>Detailed performance insights for both children and parents.</p>
+                </div>
+                <div class="feature">
+                    <h3>Parental Dashboard</h3>
+                    <p>Comprehensive view of your child's learning journey and achievements.</p>
+                </div>
+                <div class="feature">
+                    <h3>Skill Development</h3>
+                    <p>Focused on improving reading and cognitive skills through play.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <h2>Meet Team Infinity Loop</h2>
+            <div class="team-grid">
+                <div class="team-member" data-aos="flip-left">
+                    <img src="/img/vikas.jpg" alt="Vikas">
+                    <h3>Vikas</h3>
+                    <p>UI/UX Designer</p>
+                    <p>Creative mind behind Edura's intuitive design</p>
+                </div>
+                <div class="team-member" data-aos="flip-left" data-aos-delay="200">
+                    <img src="/img/anmol.jpg" alt="Anmol">
+                    <h3>Anmol</h3>
+                    <p>Technical Architect & Team Lead</p>
+                    <p>Driving the technical vision and implementation</p>
+                </div>
+                <div class="team-member" data-aos="flip-left" data-aos-delay="400">
+                    <img src="/img/adarsh.jpg" alt="Adarsh">
+                    <h3>Adarsh</h3>
+                    <p>Backend Developer</p>
+                    <p>Ensuring robust and scalable backend infrastructure</p>
+                </div>
+                <div class="team-member" data-aos="flip-left" data-aos-delay="600">
+                    <img src="/img/sauvir.jpg" alt="Sauvir">
+                    <h3>Sauvir</h3>
+                    <p>UI/UX Designer</p>
+                    <p>Crafting engaging user experiences</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What is Edura?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    Edura is an innovative learning platform that transforms education into an exciting, gamified experience for children.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How does Edura help children learn?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    Through interactive games and personalized learning paths, Edura makes education fun and engaging, focusing on improving reading and cognitive skills.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Is Edura suitable for all grades?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    Edura offers tailored content for grades from Kindergarten to 5th grade, ensuring age-appropriate and effective learning experiences.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How can parents track their child's progress?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    Parents can access a comprehensive dashboard that provides detailed insights into their child's learning journey, achievements, and areas of improvement.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                toggle.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                toggle.textContent = '−';
+            }
+        }
+    </script>
+</body>
+</html>

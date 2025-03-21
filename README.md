@@ -21,10 +21,10 @@ Traditional educational platforms often focus solely on either children's learni
 
 -> we conducted a survey using google form regarding the problems they face about their childern engagement in education
 
-![Survey Questions](./Images/GamesImage.jpg)
-![Result 1](./Images/SuperKidDetective.jpg)
-![Result 2](./Images/chartImage.jpg)
-![Result 3](./Images/chartImage.jpg)
+![Survey Questions](./Images/SurveyQuestions.jpg)
+![Result 1](./Images/Result1.jpg)
+![Result 2](./Images/Result2.jpg)
+![Result 3](./Images/ParentsInsights.jpg)
 
 ## 🌟 Features
 

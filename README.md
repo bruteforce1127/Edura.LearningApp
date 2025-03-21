@@ -1,6 +1,7 @@
 # Edura - Hack To Crack 2.0 Hackathon Project
 
-https://www.google.com/url?sa=i&url=https%3A%2F%2Fedura.en.softonic.com%2Fandroid&psig=AOvVaw2Fzkkiwut5aKBWpMPPJTsr&ust=1742592731647000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKix0ffNmYwDFQAAAAAdAAAAABAE
+![Edura Logo]()
+
 
 ## 🏆 Hack To Crack 2.0 Submission
 

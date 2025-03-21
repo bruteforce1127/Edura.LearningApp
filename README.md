@@ -50,7 +50,7 @@ Traditional educational platforms often focus solely on either children's learni
 ## 📊 Demo & Presentation
 
 - [View Demo](https://your-demo-link.com) *(Coming Soon)*
-- [Presentation Slides](./Images/EDURA_PPT_Upload) *(Coming Soon)*
+- [Presentation Slides](./Images/EDURA_PPT_Upload.pdf) *(Coming Soon)*
 
 ## 🚀 Quick Start
 

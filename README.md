@@ -1,6 +1,6 @@
 # Edura - Hack To Crack 2.0 Hackathon Project
 
-![Edura Logo]()
+![Edura Logo](./Images/edura-logo_converted.png)
 
 
 ## 🏆 Hack To Crack 2.0 Submission

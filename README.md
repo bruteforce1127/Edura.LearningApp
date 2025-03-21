@@ -88,9 +88,12 @@ Traditional educational platforms often focus solely on either children's learni
 
 ## 📷 Screenshots
 
-![Dashboard](https://placehold.co/800x450?text=Dashboard+Screenshot)
-![Learning+Game](https://placehold.co/800x450?text=Learning+Game+Screenshot)
-![Parent+Analytics](https://placehold.co/800x450?text=Parent+Analytics+Screenshot)
+![Childern Games](./Images/GamesImage.jpg)
+![Super Kid Detective](./Images/)
+![Child Report](./Images/chartImage.jpg)
+![Parents DashBoard](./Images/PerformanceImage.jpg)
+![Lessons ](./Images/LessonImage.jpg)
+![Multiplayer Quest](./Images/QuizImage.jpg)
 
 ## 🔮 Future Scope
 

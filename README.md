@@ -89,7 +89,7 @@ Traditional educational platforms often focus solely on either children's learni
 ## 📷 Screenshots
 
 ![Childern Games](./Images/GamesImage.jpg)
-![Super Kid Detective](./Images/)
+![Super Kid Detective](./Images/SuperKidDetective.jpg)
 ![Child Report](./Images/chartImage.jpg)
 ![Parents DashBoard](./Images/PerformanceImage.jpg)
 ![Lessons ](./Images/LessonImage.jpg)

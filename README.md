@@ -57,8 +57,6 @@ Traditional educational platforms often focus solely on either children's learni
 - **Backend**: Spring Boot, Spring MVC
 
 ## 📊 Demo & Presentation
-
-- [Video Demo of project](https://your-demo-link.com) 
 - [Overview of complete project via slides](./Images/EDURA_PPT_Upload.pdf) 
 
 ## 🚀 Quick Start

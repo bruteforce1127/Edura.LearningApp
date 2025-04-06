@@ -90,8 +90,8 @@ Traditional educational platforms often focus solely on either children's learni
 
 - **Anmol Upadhyay** - Team Leader & UI/UX Designer
 - **Vikas Kumar** - UI/UX Designer
-- **Sauvir Wodehra** - Data Binder and Tester
-- **Adarsh Dubey** - Backend Developer
+- **Sauvir Wodehra** - Backend Developer
+- **Adarsh Dubey** - Backend Developer and Project Manager
 
 ## 📷 Screenshots
 

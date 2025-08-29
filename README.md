@@ -19,7 +19,7 @@ Traditional educational platforms often focus solely on either children's learni
 
 # Survey Results
 
--> we conducted a survey using google form regarding the problems they face about their childern engagement in education
+We conducted a survey using google form regarding the problems they face about their childern engagement in education
 
 ![Survey Questions](./Images/SurveyQuestions.jpg)
 ![Result 1](./Images/Result1.jpg)
